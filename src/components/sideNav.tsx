@@ -6,7 +6,7 @@ export default function SideNav({ open, onClose }: { open: boolean, onClose: () 
       >
         <button className="p-4 text-xl" onClick={onClose}>✕</button>
         <nav className="flex flex-col p-4 space-y-2">
-          <a href="/" className="hover:text-blue-600">Главная</a>
+          <a href="/home" className="hover:text-blue-600">Главная</a>
           <a href="/services" className="hover:text-blue-600">Конвертер валют</a>
           <a href="/about" className="hover:text-blue-600">О банке</a>
         </nav>
