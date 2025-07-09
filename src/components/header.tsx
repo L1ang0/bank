@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
     return (
             <header className="flex items-center justify-between bg-gradient-to-r from-red-500 to-red-400 text-white px-6 py-1 shadow">
@@ -8,7 +9,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
                 &#9776;
               </span>
               </button>
-              <img src="/logo.png" alt="Bank Logo" className="h-17 w-35 animate-[pulse_2.5s_ease-in-out_infinite] [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]" />
+              <Image src="/logo.png" alt="Bank Logo" width={140} height={60}  className="h-17 w-35 animate-[pulse_2.5s_ease-in-out_infinite] [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]" />
               <Link href="/" className="ml-2 text-2xl font-bold text-white hover:text-red-200 transition-colors duration-300">
                 БГБ Банк
               </Link>

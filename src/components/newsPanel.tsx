@@ -2,8 +2,16 @@
 
 import { useEffect, useState } from 'react'
 
+type Article = {
+  title: string
+  url: string
+  source: {
+    name: string
+  }
+}
+
 export default function NewsPanel() {
-  const [articles, setArticles] = useState<any[]>([])
+  const [articles, setArticles] = useState<Article[]>([])
 
   useEffect(() => {
     const fetchNews = async () => {
