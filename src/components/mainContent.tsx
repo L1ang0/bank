@@ -69,6 +69,9 @@ export default function MainContent() {
           ].map((item, i) => (
             
             <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
               key={i}
               whileHover={{
                 scale: 1.03,
@@ -86,18 +89,22 @@ export default function MainContent() {
     }
   }}
 
-  className="bg-white p-6 rounded-xl shadow hover:shadow-xl"
+        className="bg-white p-6 rounded-xl shadow hover:shadow-xl"
 >
-  <div className="text-4xl mb-2">{item.icon}</div>
-  <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
-  <p className="text-gray-600">{item.desc}</p>
-</motion.div>
+        <div className="text-4xl mb-2">{item.icon}</div>
+        <h3 className="text-xl font-semibold mb-1">{item.title}</h3>
+        <p className="text-gray-600">{item.desc}</p>
+      </motion.div>
           ))}
         </div>
       </div>
 
       {/* Преимущества */}
-      <div className="bg-blue-50 p-8 rounded-xl">
+      <motion.div 
+      initial={{ opacity: 0, y: -20, x:30 }}
+      animate={{ opacity: 1, y: 0, x:0 }}
+      transition={{ duration: 0.8 }}
+      className="bg-blue-50 p-8 rounded-xl">
         <h2 className="text-3xl font-bold text-blue-800 mb-6">Почему выбирают нас</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {[
@@ -114,7 +121,7 @@ export default function MainContent() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* О банке */}
       <motion.div
@@ -124,11 +131,43 @@ export default function MainContent() {
         className="relative rounded-xl overflow-hidden text-white"
       >
 
-        <div className="relative p-10 bg-gradient-to-r from-red-600 to-red-500 bg-opacity-70">
-          <h2 className="text-3xl font-bold mb-4">О БГБ Банке</h2>
-          <p className="text-lg max-w-3xl">
+        <div className="relative pl-5 pt-10 bg-gradient-to-r from-red-600 to-red-500 bg-opacity-70 ">
+          <h2 className="text-3xl font-bold mb-3">О БГБ Банке</h2>
+          <div className='flex items-center justify-between'>
+          <p className="-mt-15 text-lg max-w-3xl">
             Мы — современный, надёжный банк, который помогает миллионам белорусов решать финансовые задачи. Наши решения — это доверие, безопасность и инновации. БГБ Банк входит в список крупнейших банков страны и активно развивается в цифровой среде.
           </p>
+          <motion.img
+    src="/bankSymb.jpg"
+    alt="Bank Symb"
+    className="h-50 w-60 mb-8 mr-16 -mt-15 rounded-xl"
+    initial={{ 
+      filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.4))",
+      rotate: 0
+    }}
+    whileHover={{
+      y: -2,
+      x: -15,
+      scale: 1.05,
+      filter: "drop-shadow(0 15px 20px rgba(0,0,0,0.6))",
+      transition: {
+        rotate: {
+          duration: 1.8,
+          repeat: Infinity,
+          ease: "easeInOut"
+        },
+        y: {
+          type: "spring",
+          stiffness: 300,
+          damping: 10
+        },
+        scale: {
+          duration: 0.7
+        }
+      }
+    }}
+  />
+  </div>
         </div>
       </motion.div>
 

@@ -20,7 +20,7 @@ export default function HomePage() {
           <MainContent/>
         </main>
 
-        <aside className="w-65 p-4 bg-white border-l overflow-y-auto">
+        <aside className="w-75 p-4 bg-white border-none overflow-y-auto">
           <NewsPanel />
         </aside>
       </div>
