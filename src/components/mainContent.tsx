@@ -101,8 +101,8 @@ export default function MainContent() {
         className="bg-white md:p-6 sm:p-4 p-4 rounded-xl shadow hover:shadow-xl "
 >
         <div className="md:text-4xl sm:text-2xl text-2xl mb-2">{item.icon}</div>
-        <h3 className="md:text-xl sm:text-[18px] text-[16px] font-semibold mb-1">{item.title}</h3>
-        <p className="text-gray-600 md:text-xl sm:text-[18px] text-[14px]">{item.desc}</p>
+        <h3 className="md:text-xl text-[#2f00ff] sm:text-[18px] text-[16px] font-semibold mb-1">{item.title}</h3>
+        <p className="text-gray-600  md:text-xl sm:text-[18px] text-[14px]">{item.desc}</p>
       </motion.div>
           ))}
         </div>
@@ -126,7 +126,7 @@ export default function MainContent() {
           ].map((benefit, idx) => (
             <div key={idx} className="flex items-start space-x-3">
               <CheckCircle className="text-blue-600 mt-1 sm:w-5 w-4 sm:h-5 h-4 flex-shrink-0 " />
-              <span className="text-gray-700 md:text-[20px] sm:text-[18px] text[16px] font-bold">{benefit}</span>
+              <span className="text-gray-700  md:text-[20px] sm:text-[18px] text[16px] font-bold">{benefit}</span>
             </div>
           ))}
         </div>
@@ -139,7 +139,7 @@ export default function MainContent() {
   viewport={{ once: true }}
   className="relative rounded-xl overflow-hidden text-white max-md:-mt-[50px]"
 >
-  <div className="relative pl-5 pt-10 bg-gradient-to-r from-red-600 to-red-500 bg-opacity-70 max-md:h-[450px] max-sm:h-[500px]">
+  <div className="relative pl-5 pt-10 bg-gradient-to-r from-red-600 to-red-500 bg-opacity-70 max-md:h-[450px] max-sm:h-[400px]">
     <h2 className="md:text-3xl sm:text-2xl text-xl font-bold mb-3">О БГБ Банке</h2>
     <div className="md:flex items-center justify-between">
       <p className="md:-mt-15 md:text-lg sm:text-[14px] text-[10px] max-w-3xl">
