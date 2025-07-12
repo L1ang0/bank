@@ -1,7 +1,30 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
+
 export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
+  const [currentTime, setCurrentTime] = useState({
+    hours: '00',
+    minutes: '00',
+    seconds: '00'
+  })
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date()
+      setCurrentTime({
+        hours: now.getHours().toString().padStart(2, '0'),
+        minutes: now.getMinutes().toString().padStart(2, '0'),
+        seconds: now.getSeconds().toString().padStart(2, '0')
+      })
+    }
+
+    updateTime()
+    const timerId = setInterval(updateTime, 1000)
+    return () => clearInterval(timerId)
+  }, [])
+
     return (
             <header className="flex items-center justify-between bg-gradient-to-r from-red-500 to-red-400 text-white px-6 py-1 shadow">
             <div className="flex items-center">
@@ -15,9 +38,34 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
                 БГБ Банк
               </Link>
             </div>
-            <Link href="/" className="hover:text-red-200 md:text-[20px] sm:text-[18px] text-[13px] bg-gradient-to-r rounded-2xl p-1 from-[#ff1a1a7a] to-[#ff2a2aa4] hover:text-shadow-[7px_8px_12px_rgba(0,0,0,0.2)] transition-all duration-300">
+            <div className="flex items-center gap-12">
+            <div className="hidden sm:flex items-center rounded-lg px-3 py-1 
+              bg-gradient-to-br from-[#ffffffaf]/20 via-[#da0000af]/60 to-[#da0000af]/30
+              border border-[#ffffff]/30 border-b-[#ff0f0f]/50 border-r-[#ff0f0f]/50
+              shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),12px_6px_12px_rgba(255,50,50,0.7)]
+              hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_0_16px_rgba(255,80,80,0.7)]
+              backdrop-blur-sm transition-all duration-300">
+            
+              <span className="font-mono text-white text-lg sm:text-[16px] md:text-xl font-medium tracking-tighter">
+                <span className="text-red-200 hover:text-red-50 transition-all duration-200 hover:scale-110 hover:text-[20.3px] hover:drop-shadow-[0_0_8px_rgba(255,100,100,0.8)]">
+                  {currentTime.hours}
+                </span>
+                <span className="text-white/80 mx-0.5 animate-pulse">:</span>
+                <span className="text-green-200 hover:text-green-50 transition-all duration-200 hover:scale-110 hover:text-[20.3px] hover:drop-shadow-[0_0_8px_rgba(100,255,100,0.8)]">
+                  {currentTime.minutes}
+                </span>
+                <span className="text-white/80 mx-0.5 animate-pulse">:</span>
+                <span className="text-blue-200 hover:text-blue-50 transition-all duration-200 hover:scale-110 hover:text-[20.3px] hover:drop-shadow-[0_0_8px_rgba(100,100,255,0.8)]">
+                  {currentTime.seconds}
+                </span>
+              </span>
+            </div>
+            <Link href="/" className="hover:text-red-200 md:text-[20px] sm:text-[18px] text-[13px] bg-gradient-to-r rounded-2xl p-1 from-[#ff1a1a7a]/40 to-[#ff2a2aa4]/30 hover:text-shadow-[7px_8px_12px_rgba(0,0,0,0.2)] transition-all duration-300
+            border border-[#ffffff]/20 border-b-[#ff0f0f]/40 border-r-[#ff0f0f]/40 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),12px_6px_12px_rgba(255,50,50,0.7)]
+            hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_0_16px_rgba(255,80,80,0.7)] backdrop-blur-sm">
               Вход в аккаунт
             </Link>
+            </div>
           </header>
 
     )
