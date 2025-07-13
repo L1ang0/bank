@@ -1,11 +1,10 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
-import { useRef } from 'react'
+import React from 'react'
 
 export default function MainContent() {
-  const aboutRef = useRef<HTMLElement | null>(null)
 
   const scrollToAbout = () => {
     const el = document.getElementById("about")
@@ -151,7 +150,7 @@ export default function MainContent() {
       className="relative rounded-xl overflow-hidden text-white max-md:-mt-[50px]"
     >
   <div className="relative pl-5 pt-10 bg-gradient-to-r from-red-600 to-red-500 bg-opacity-70 max-md:h-[450px] max-sm:h-[400px]">
-    <h2 className="md:text-3xl sm:text-2xl text-xl font-bold mb-3">О БГБ Банке</h2>
+    <h2 className="md:text-3xl sm:text-2xl text-xl font-bold mb-3 ">О БГБ Банке</h2>
     <div className="md:flex items-center justify-between">
       <p className="md:-mt-15 md:text-lg sm:text-[14px] text-[10px] max-w-3xl">
         Мы — современный, надёжный банк, который помогает миллионам белорусов решать финансовые задачи. Наши решения — это доверие, безопасность и инновации. БГБ Банк входит в список крупнейших банков страны и активно развивается в цифровой среде.
@@ -160,9 +159,9 @@ export default function MainContent() {
         src="/bankSymb.jpg"
         alt="Bank Symb"
         className="
-          h-50 w-60 max-sm:h-35 max-sm:w-35 max-sm:justify-center mb-8 rounded-xl
+          h-50 w-60 max-sm:h-35 max-sm:w-35 max-sm:ml-2 max-sm:justify-center mb-8 rounded-xl
           md:mr-15 md:-mt-15 
-          max-md:mx-auto max-md:mt-4
+          mx-auto mt-4 block
         "
         initial={{ 
           filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.4))",
@@ -270,10 +269,11 @@ export default function MainContent() {
         rating: 5,
       },
     ].map((review, i) => (
-      <div key={i} className="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-between h-full">
+      <div key={i} className="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-between h-full hover:scale-105
+      hover:shadow-xl duration-300 transition-all">
         <p className="text-gray-700 mb-3 text-sm sm:text-base">&ldquo;{review.text}&rdquo;</p>
         <div className="flex justify-between items-center mt-auto">
-          <span className="font-semibold text-blue-800 text-sm sm:text-base">{review.name}</span>
+          <span className="font-semibold text-blue-800 text-[12px] sm:text-base">{review.name}</span>
           <div className="text-yellow-400 text-sm">
             {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
           </div>
@@ -298,35 +298,58 @@ export default function MainContent() {
   <div className="space-y-4">
     {[
       {
-        q: 'Как открыть счёт онлайн?',
-        a: 'Вы можете открыть счёт через мобильное приложение или личный кабинет на сайте.',
+        q: '➡️ Как открыть счёт онлайн?',
+        a: '✅ Вы можете открыть счёт через мобильное приложение или личный кабинет на сайте.',
       },
       {
-        q: 'Какие документы нужны для кредита?',
-        a: 'Паспорт гражданина РБ и справка о доходах за последние 3 месяца.',
+        q: '➡️ Какие документы нужны для кредита?',
+        a: '✅ Паспорт гражданина РБ и справка о доходах за последние 3 месяца.',
       },
       {
-        q: 'Где можно пополнить счёт без комиссии?',
-        a: 'Во всех наших банкоматах и партнёрских сетях без комиссии.',
+        q: '➡️ Где можно пополнить счёт без комиссии?',
+        a: '✅ Во всех наших банкоматах и партнёрских сетях без комиссии.',
       },
       {
-        q: 'Можно ли досрочно погасить кредит?',
-        a: 'Да, досрочное погашение доступно без штрафов. Обратитесь в отделение или оформите заявку онлайн.',
+        q: '➡️ Можно ли досрочно погасить кредит?',
+        a: '✅ Да, досрочное погашение доступно без штрафов. Обратитесь в отделение или оформите заявку онлайн.',
       },
       {
-        q: 'Как восстановить доступ к интернет-банкингу?',
-        a: 'Вы можете восстановить доступ через форму восстановления на сайте или обратиться в службу поддержки.',
+        q: '➡️ Как восстановить доступ к интернет-банкингу?',
+        a: '✅ Вы можете восстановить доступ через форму восстановления на сайте или обратиться в службу поддержки.',
       },
-    ].map((item, idx) => (
-      <details key={idx} className="group border-b pb-2">
-        <summary className="cursor-pointer text-blue-800 font-semibold text-sm sm:text-base group-open:mb-2">
-          {item.q}
-        </summary>
-        <p className="text-gray-600 text-sm sm:text-base">{item.a}</p>
-      </details>
-    ))}
+    ].map((item, idx) => {
+      const [isOpen, setIsOpen] = React.useState(false);
+      
+      return (
+        <div key={idx} className="border-b pb-2 overflow-hidden">
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full text-left cursor-pointer text-blue-800 font-semibold text-sm sm:text-base"
+          >
+            {item.q}
+          </button>
+          
+          <AnimatePresence>
+            {isOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="overflow-hidden"
+              >
+                <p className="text-gray-600 text-sm sm:text-base pt-2 pb-1">
+                  {item.a}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    })}
   </div>
 </motion.div>
+  
 
 
       {/* Контакты */}
