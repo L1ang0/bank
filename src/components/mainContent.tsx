@@ -12,6 +12,35 @@ export default function MainContent() {
       el.scrollIntoView({ behavior: 'smooth' })
     }
   }
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(prev => (prev === index ? null : index));
+  };
+  
+  const faqData = [
+    {
+      q: '➡️ Как открыть счёт онлайн?',
+      a: '✅ Вы можете открыть счёт через мобильное приложение или личный кабинет на сайте.',
+    },
+    {
+      q: '➡️ Какие документы нужны для кредита?',
+      a: '✅ Паспорт гражданина РБ и справка о доходах за последние 3 месяца.',
+    },
+    {
+      q: '➡️ Где можно пополнить счёт без комиссии?',
+      a: '✅ Во всех наших банкоматах и партнёрских сетях без комиссии.',
+    },
+    {
+      q: '➡️ Можно ли досрочно погасить кредит?',
+      a: '✅ Да, досрочное погашение доступно без штрафов. Обратитесь в отделение или оформите заявку онлайн.',
+    },
+    {
+      q: '➡️ Как восстановить доступ к интернет-банкингу?',
+      a: '✅ Вы можете восстановить доступ через форму восстановления на сайте или обратиться в службу поддержки.',
+    },
+  ];
+
   return (
     <section className="space-y-16">
 
@@ -296,61 +325,34 @@ export default function MainContent() {
     Часто задаваемые вопросы
   </h2>
   <div className="space-y-4">
-    {[
-      {
-        q: '➡️ Как открыть счёт онлайн?',
-        a: '✅ Вы можете открыть счёт через мобильное приложение или личный кабинет на сайте.',
-      },
-      {
-        q: '➡️ Какие документы нужны для кредита?',
-        a: '✅ Паспорт гражданина РБ и справка о доходах за последние 3 месяца.',
-      },
-      {
-        q: '➡️ Где можно пополнить счёт без комиссии?',
-        a: '✅ Во всех наших банкоматах и партнёрских сетях без комиссии.',
-      },
-      {
-        q: '➡️ Можно ли досрочно погасить кредит?',
-        a: '✅ Да, досрочное погашение доступно без штрафов. Обратитесь в отделение или оформите заявку онлайн.',
-      },
-      {
-        q: '➡️ Как восстановить доступ к интернет-банкингу?',
-        a: '✅ Вы можете восстановить доступ через форму восстановления на сайте или обратиться в службу поддержки.',
-      },
-    ].map((item, idx) => {
-      const [isOpen, setIsOpen] = React.useState(false);
-      
-      return (
-        <div key={idx} className="border-b pb-2 overflow-hidden">
-          <button 
-            onClick={() => setIsOpen(!isOpen)}
-            className="w-full text-left cursor-pointer text-blue-800 font-semibold text-sm sm:text-base"
-          >
-            {item.q}
-          </button>
-          
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="overflow-hidden"
-              >
-                <p className="text-gray-600 text-sm sm:text-base pt-2 pb-1">
-                  {item.a}
-                </p>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      );
-    })}
+    {faqData.map((item, idx) => (
+      <div key={idx} className="border-b pb-2">
+        <button
+          onClick={() => toggleFAQ(idx)}
+          className="w-full text-left flex justify-between items-center text-blue-800 font-semibold text-sm sm:text-base"
+        >
+          <span>{item.q}</span>
+          <span>{openIndex === idx ? '−' : '+'}</span>
+        </button>
+
+        <AnimatePresence initial={false}>
+          {openIndex === idx && (
+            <motion.div
+              key="answer"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden mt-2 text-gray-700 text-sm sm:text-base"
+            >
+              {item.a}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    ))}
   </div>
 </motion.div>
-  
-
 
       {/* Контакты */}
       <div className="bg-white p-6 rounded-xl shadow text-center max-sm:-mt-[50px]">
