@@ -29,7 +29,7 @@ export default function NewsPanel() {
         {articles.map((article, idx) => (
           <li
             key={idx}
-            className="md:p-4 sm:p-3 p-1 md:mr-0 -mr-4 md:ml-0 -ml-4 bg-[#f5f5f5] dark:bg-[#2f2f2f] rounded-lg shadow hover:shadow-md transition-shadow duration-300"
+            className="md:p-4 sm:p-3 p-1 md:mr-0 -mr-4 md:ml-0 -ml-4 bg-[#f5f5f5] dark:bg-[#404040] rounded-lg shadow hover:shadow-md transition-shadow duration-300"
           >
             <a
               href={article.url}

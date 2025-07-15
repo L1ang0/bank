@@ -29,7 +29,7 @@ export default function ThemeToggleButton() {
   }
 
   return (
-    <div className="md:-mr-[15px] mt-1 -mr-0 flex flex-col items-center space-y-1">
+    <div className="md:-mr-[22px] sm:-mr-[15px] -mr-[5px] mt-1 flex flex-col items-center space-y-1">
       <label className="relative inline-flex items-center cursor-pointer w-12 sm:w-14 md:w-16 h-5 sm:h-6 md:h-7">
         <input 
           type="checkbox" 
