@@ -53,7 +53,7 @@ export default function MainContent() {
 >
 
   <div className="md:space-y-4 sm:space-y-2 space-y-1 md:max-w-[600px] sm:max-w-[400px] max-w-[200px] w-full">
-    <h1 className="md:text-5xl sm:text-[24px] text-[20px] md:mb-5 sm:mb-2 mb-5 text-text font-bold leading-snug">
+    <h1 className="md:text-5xl sm:text-[24px] text-[20px] md:mb-5 sm:mb-2 mb-5 text-[#ffffff] dark:text-[#f1f5f9] font-bold leading-snug">
       БГБ Банк — Ваш финансовый партнёр
     </h1>
     <p className="md:text-2xl sm:text-[18px] text-[14px] md:mb-0 sm:mb-2 mb-4 text-blue-50">
@@ -65,7 +65,7 @@ export default function MainContent() {
     <div className="max-md:flex max-md:justify-center">
     <button onClick={scrollToAbout}
      className="lg:mt-8 mt-4 px-6 py-2 md:h-auto sm:h-[35px] h-[30px]  md:text-[16px] sm:text-[14px] text-[12px] bg-white 
-     dark:bg-blue-100 text-[var(--color-secondary)] font-semibold rounded-lg
+     dark:bg-blue-100 text-[#1d4ed8] dark:text-[#2289ff] font-semibold rounded-lg
      dark:hover:bg-blue-200 hover:bg-red-100 hover:rotate-1 hover:scale-102 transition-all cursor-pointer duration-400 transform">
       Подробнее о нас
     </button>
@@ -110,7 +110,7 @@ export default function MainContent() {
 
       {/* Услуги банка */}
       <div className='max-md:mt-[10px] md:mt-[16px]'>
-        <h2 className="md:text-3xl sm:text-2xl text-2xl font-bold text-[var(--color-secondary)] md:mb-4 mb-6">Наши продукты</h2>
+        <h2 className="md:text-3xl sm:text-2xl text-2xl font-bold text-[#1d4ed8] dark:text-[#2289ff] md:mb-4 mb-6">Наши продукты</h2>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 md:gap-6 sm:gap-5 gap-4">
           {[
             { title: 'Депозиты', desc: 'Ставки до 12% годовых. Гибкие сроки и условия.', icon: '💰' },
@@ -139,10 +139,10 @@ export default function MainContent() {
     }
   }}
 
-        className="bg-[var(--color-card)] md:p-6 sm:p-4 p-4 rounded-xl shadow hover:shadow-xl"
+        className="bg-[#ffffff] dark:bg-[#dbdbdb] md:p-6 sm:p-4 p-4 rounded-xl shadow hover:shadow-xl"
 >
         <div className="md:text-4xl sm:text-2xl text-2xl mb-2">{item.icon}</div>
-        <h3 className="md:text-xl text-[var(--color-secondary)] sm:text-[18px] text-[16px] font-semibold mb-1">{item.title}</h3>
+        <h3 className="md:text-xl text-[#1d4ed8] dark:text-[#2289ff] sm:text-[18px] text-[16px] font-semibold mb-1">{item.title}</h3>
         <p className="text-gray-600 dark:text-gray-800 md:text-xl sm:text-[18px] text-[14px]">{item.desc}</p>
       </motion.div>
           ))}
@@ -154,8 +154,8 @@ export default function MainContent() {
       initial={{ opacity: 0, y: -20, x:30 }}
       animate={{ opacity: 1, y: 0, x:0 }}
       transition={{ duration: 0.8 }}
-      className="bg-[var(--color-card)] p-8 rounded-xl max-md:-mt-[50px] max-sm:-ml-[10px] max-sm:-mr-[10px]">
-        <h2 className="md:text-3xl sm:text-3xl text-xl font-bold text-[var(--color-secondary)] mb-6">Почему выбирают нас</h2>
+      className="bg-[#ffffff] dark:bg-[#dbdbdb] p-8 rounded-xl max-md:-mt-[50px] max-sm:-ml-[10px] max-sm:-mr-[10px]">
+        <h2 className="md:text-3xl sm:text-3xl text-xl font-bold text-[#1d4ed8] dark:text-[#2289ff] mb-6">Почему выбирают нас</h2>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 md:gap-6 sm:gap-5 gap-3">
           {[
             '20+ лет на рынке',
@@ -166,7 +166,7 @@ export default function MainContent() {
             'Индивидуальный подход к каждому',
           ].map((benefit, idx) => (
             <div key={idx} className="flex items-start space-x-3">
-              <CheckCircle className="text-[var(--color-secondary)] mt-1 sm:w-5 w-4 sm:h-5 h-4 flex-shrink-0 " />
+              <CheckCircle className="text-[#1d4ed8] dark:text-[#2289ff] mt-1 sm:w-5 w-4 sm:h-5 h-4 flex-shrink-0 " />
               <span className="text-gray-700  md:text-[20px] sm:text-[18px] text[16px] font-bold">{benefit}</span>
             </div>
           ))}
@@ -231,10 +231,10 @@ export default function MainContent() {
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true }}
   transition={{ duration: 0.8 }}
-  className="grid md:grid-cols-2 grid-cols-1 bg-[var(--color-card)] rounded-xl shadow overflow-hidden max-md:-mt-[50px]"
+  className="grid md:grid-cols-2 grid-cols-1 bg-[#ffffff] dark:bg-[#dbdbdb] rounded-xl shadow overflow-hidden max-md:-mt-[50px]"
 >
   <div className="p-8 flex flex-col justify-center bg-gradient-to-b from-blue-50 to-white dark:bg-gradient-to-b dark:from-blue-50 dark:to-blue-100">
-    <h2 className="text:xl sm:text-2xl md:text-3xl font-bold text-[var(--color-secondary)] mb-4">
+    <h2 className="text:xl sm:text-2xl md:text-3xl font-bold text-[#1d4ed8] dark:text-[#2289ff] mb-4">
       Современный подход к банковскому обслуживанию
     </h2>
     <ul className="space-y-3 text-gray-700 md:text-[20px] sm:text-[16px] text-[12px]">
@@ -275,9 +275,9 @@ export default function MainContent() {
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true }}
   transition={{ duration: 0.8 }}
-  className="bg-[var(--color-card)] p-6 sm:p-8 rounded-xl shadow max-sm:-mt-[20px]"
+  className="bg-[#ffffff] dark:bg-[#dbdbdb] p-6 sm:p-8 rounded-xl shadow max-sm:-mt-[20px]"
 >
-  <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-secondary)] mb-6 text-center">Отзывы клиентов</h2>
+  <h2 className="text-2xl sm:text-3xl font-bold text-[#1d4ed8] dark:text-[#2289ff] mb-6 text-center">Отзывы клиентов</h2>
   <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
     {[
       {
@@ -305,7 +305,7 @@ export default function MainContent() {
       hover:shadow-xl duration-300 transition-all">
         <p className="text-gray-700 mb-3 text-sm sm:text-base">&ldquo;{review.text}&rdquo;</p>
         <div className="flex justify-between items-center mt-auto">
-          <span className="font-semibold text-[var(--color-secondary)] text-[12px] sm:text-base">{review.name}</span>
+          <span className="font-semibold text-[#1d4ed8] dark:text-[#2289ff] text-[12px] sm:text-base">{review.name}</span>
           <div className="text-yellow-400 text-sm">
             {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
           </div>
@@ -322,9 +322,9 @@ export default function MainContent() {
   whileInView={{ opacity: 1, y: 0 }}
   viewport={{ once: true }}
   transition={{ duration: 0.8 }}
-  className="bg-[var(--color-card)] p-8 rounded-xl shadow max-sm:-mt-[20px]"
+  className="bg-[#ffffff] dark:bg-[#dbdbdb] p-8 rounded-xl shadow max-sm:-mt-[20px]"
 >
-  <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-secondary)] mb-6 text-center">
+  <h2 className="text-2xl sm:text-3xl font-bold text-[#1d4ed8] dark:text-[#2289ff] mb-6 text-center">
     Часто задаваемые вопросы
   </h2>
   <div className="space-y-4">
@@ -332,7 +332,7 @@ export default function MainContent() {
       <div key={idx} className="border-b pb-2">
         <button
           onClick={() => toggleFAQ(idx)}
-          className="w-full text-left flex justify-between items-center text-[var(--color-secondary)] font-semibold text-sm sm:text-base"
+          className="w-full text-left flex justify-between items-center text-[#1d4ed8] dark:text-[#2289ff] font-semibold text-sm sm:text-base"
         >
           <span>{item.q}</span>
           <span>{openIndex === idx ? '−' : '+'}</span>
@@ -358,8 +358,8 @@ export default function MainContent() {
 </motion.div>
 
       {/* Контакты */}
-      <div className="bg-[var(--color-card)] p-3 rounded-xl shadow text-center max-sm:-mt-[50px]">
-        <h2 className="text-2xl max-sm:text-xl font-semibold text-[var(--color-secondary)] mb-2">Контакты</h2>
+      <div className="bg-[#ffffff] dark:bg-[#dbdbdb] p-3 rounded-xl shadow text-center max-sm:-mt-[50px]">
+        <h2 className="text-2xl max-sm:text-xl font-semibold text-[#1d4ed8] dark:text-[#2289ff] mb-2">Контакты</h2>
         <p className="text-gray-700 max-sm:text-[14px]">📍 г. Минск, ул. Интернациональная, 36</p>
         <p className="text-gray-700 max-sm:text-[12px]">📞 +375 (17) 218-99-01</p>
         <p className="text-gray-700 max-sm:text-[14px]">📧 info@bgb.by</p>
