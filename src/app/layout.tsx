@@ -1,5 +1,9 @@
-'use client'
 import './globals.css'
+
+export const metadata = {
+  title: 'БГБ Банк',
+  description: 'Надёжный онлайн-банк',
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
