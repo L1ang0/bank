@@ -8,7 +8,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru">
-      <body className="bg-gray-100 text-gray-900">
+      <body className="bg-bg text-text">
         <div className="flex">
           {/* children — контент текущей страницы (page.tsx) */}
           {children}
