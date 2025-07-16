@@ -18,7 +18,7 @@ export default function SideNav({ open, onClose }: { open: boolean, onClose: () 
           <Link href="/" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-gray-800 hover:text-[#dfdfdf]
               transition-all duration-300 transform hover:rotate-1
               hover:translate-x-2 hover:scale-[1.02] hover:text-shadow-[0px_8px_8px_rgba(0,0,0,0.9)]">Главная</Link>
-          <a href="/services" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-gray-800 hover:text-[#dfdfdf]
+          <a href="/converter" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-gray-800 hover:text-[#dfdfdf]
               transition-all duration-300 transform hover:rotate-1
               hover:translate-x-2 hover:scale-[1.02] hover:text-shadow-[0px_8px_8px_rgba(0,0,0,0.9)]">Конвертер валют</a>
           <a href="/about" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-gray-800 hover:text-[#dfdfdf] 
