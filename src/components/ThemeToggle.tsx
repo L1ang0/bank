@@ -29,8 +29,8 @@ export default function ThemeToggleButton() {
   }
 
   return (
-    <div className="md:-mr-[22px] sm:-mr-[15px] -mr-[5px] mt-1 flex flex-col items-center space-y-1">
-      <label className="relative inline-flex items-center cursor-pointer w-12 sm:w-14 md:w-16 h-5 sm:h-6 md:h-7">
+    <div className="md:-mr-[22px] sm:-mr-[21px] -mr-[20px] mt-2 flex flex-col items-center space-y-1">
+      <label className="relative inline-flex items-center cursor-pointer w-12 sm:w-14 md:w-16 h-5 sm:h-6 md:h-7 sm:-mr-0 -mr-2">
         <input 
           type="checkbox" 
           checked={isDark}
@@ -50,13 +50,13 @@ export default function ThemeToggleButton() {
       </label>
 
       {/* Текст с адаптацией под экраны */}
-      <div className="flex w-full justify-between px-4 sm:px-6 md:px-8 items-center h-full text-[11px] sm:text-[11px] md:text-[11px] font-medium tracking-wide">
+      <div className="flex w-full justify-between px-8 sm:px-6 md:px-8 items-center h-full text-[9px] sm:text-[11px] md:text-[11px] font-medium tracking-wide">
         <span className={`
-          italic transition-all duration-300 text-cyan-400 drop-shadow-sm 
+          italic transition-all duration-300 text-cyan-300 drop-shadow-sm 
           ${isDark ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-1'}
         `}>Темная</span>
         <span className={`
-          italic transition-all duration-300 text-rose-900 drop-shadow-sm
+          italic transition-all duration-300 text-rose-200 drop-shadow-sm
           ${isDark ? 'opacity-0 translate-x-1' : 'opacity-100 translate-x-0'}
         `}>Светлая</span>
       </div>
