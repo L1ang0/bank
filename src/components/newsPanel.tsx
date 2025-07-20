@@ -21,7 +21,7 @@ export default function NewsPanel() {
     queryKey: ['news'],
     queryFn: fetchNews,
     initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
+    getNextPageParam: (lastPage) => {
       return lastPage.articles.length < 10 ? undefined : lastPage.nextPage
     }
   })

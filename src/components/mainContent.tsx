@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { CheckCircle } from 'lucide-react'
 import React from 'react'
+import Image from 'next/image'
 
 export default function MainContent() {
 
@@ -101,12 +102,15 @@ export default function MainContent() {
         }
       }}
     >
-      <img
-        src="/logo.png"
-        alt="Bank Logo"
-        className="max-xl:-mb-[10px] xl:w-[800px] md:w-[350px] sm:w-[500px] w-[250px] md:h-auto sm:h-auto h-[90px] max-sm:-mt-[5px]  
-        drop-shadow-lg dark:brightness-85 dark:contrast-110 dark:sepia-[0.3] dark:hue-rotate-[210deg] dark:saturate-200"
-      />
+      <Image
+      src="/logo.png"
+      alt="Bank Logo"
+      width={800}
+      height={250}
+      className="max-xl:-mb-[10px] xl:w-[800px] md:w-[350px] sm:w-[500px] w-[250px] md:h-auto sm:h-auto h-[90px] max-sm:-mt-[5px]  
+      drop-shadow-lg dark:brightness-85 dark:contrast-110 dark:sepia-[0.3] dark:hue-rotate-[210deg] dark:saturate-200"
+    />
+
     </motion.div>
   </div>
 </motion.div>
