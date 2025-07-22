@@ -265,7 +265,6 @@ export default function MainContent() {
     </ul>
   </div>
 
-  {/* Изображение (всегда снизу на экранах < lg) */}
   <div className="bg-cover bg-center h-[300px] lg:h-auto overflow-hidden">
     <div
       className="w-full h-full transition-all duration-800 ease-in-out hover:scale-105 bg-cover bg-center"
