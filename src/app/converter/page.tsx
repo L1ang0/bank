@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Header from '@/components/header'
 import SideNav from '@/components/sideNav'
 import CurrencyConverter from '@/components/CurrencyConverter'
