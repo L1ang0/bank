@@ -49,8 +49,9 @@ export default function HomePage() {
         </main>
 
         <aside className="w-34 sm:w-55 md:w-75 md:p-4 sm:p-3 p-1 bg-[#f5f5f5] dark:bg-[#2f2f2f] border-none overflow-y-auto">
-          {isLoading && <p className="text-sm text-center mt-15">Загрузка...</p>}
-          {isError && <p className="text-sm text-red-600">Ошибка: {(error as Error).message}</p>}
+          {isLoading && 
+          <p className="text-sm text-center mt-15 transform transition-all">Загрузка...🔄</p>}
+          {isError && <p className="text-sm text-center mt-15 text-red-600">Ошибка: {(error as Error).message}⚠️</p>}
           {!isLoading && !isError && (
             <NewsPanel articles={allArticles} observerRef={observerRef} />
           )}

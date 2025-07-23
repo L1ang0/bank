@@ -1,27 +1,33 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  const res = await fetch(
-    `https://open.er-api.com/v6/latest/USD`
-  )
+  try {
+    const res = await fetch('https://api.nbrb.by/exrates/rates?periodicity=0')
 
-  if (!res.ok) {
-    return NextResponse.json({ error: 'Failed to fetch currency data' }, { status: 500 })
+    if (!res.ok) {
+      return NextResponse.json({ error: 'Failed to fetch NBRB currency data' }, { status: 500 })
+    }
+
+    const nbrbData = await res.json()
+
+    const rates: Record<string, number> = { BYN: 1 }
+    const currencies: string[] = ['BYN']
+
+    nbrbData.forEach((item: any) => {
+      if (item.Cur_Abbreviation && item.Cur_OfficialRate && item.Cur_Scale) {
+        const ratePerUnit = item.Cur_OfficialRate / item.Cur_Scale
+        rates[item.Cur_Abbreviation] = ratePerUnit
+        currencies.push(item.Cur_Abbreviation)
+      }
+    })
+
+    return NextResponse.json({
+      currencies,
+      rates,
+      base: 'BYN',
+      timestamp: Date.now()
+    })
+  } catch (err) {
+    return NextResponse.json({ error: 'Unexpected error occurred' }, { status: 500 })
   }
-
-  const data = await res.json()
-
-  const allCurrencies = Object.keys(data.rates)
-  
-  allCurrencies.unshift(data.base_code)
-
-  const currencyList = allCurrencies
-
-  return NextResponse.json({
-    currencies: currencyList,
-    rates: data.rates,
-    base: data.base_code,
-    timestamp: data.time_last_update_unix
-  })
-
 }
