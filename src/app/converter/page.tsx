@@ -6,6 +6,8 @@ import SideNav from '@/components/sideNav'
 import CurrencyConverter from '@/components/CurrencyConverter'
 import RightSidebar from '@/components/RightSidebar'
 
+type CurrencyEntry = { value: string; amount: string }
+
 export default function HomePage() {
   const [sideOpen, setSideOpen] = useState(false)
   const [data, setData] = useState<null | {
@@ -131,10 +133,10 @@ export default function HomePage() {
 
   // Common amount change function
   const handleAmountChange = (
-    index: number, 
-    newAmount: string, 
-    currencies: any[], 
-    setCurrencies: any, 
+    index: number,
+    newAmount: string,
+    currencies: CurrencyEntry[],
+    setCurrencies: React.Dispatch<React.SetStateAction<CurrencyEntry[]>>,
     rates: Record<string, number>
   ) => {
     const updated = [...currencies]
@@ -164,10 +166,10 @@ export default function HomePage() {
 
   // Common currency change function
   const handleCurrencyChange = (
-    index: number, 
-    newCurrency: string, 
-    currencies: any[], 
-    setCurrencies: any, 
+    index: number,
+    newCurrency: string,
+    currencies: CurrencyEntry[],
+    setCurrencies: React.Dispatch<React.SetStateAction<CurrencyEntry[]>>,
     amountHandler: (index: number, amount: string) => void
   ) => {
     const updated = [...currencies]

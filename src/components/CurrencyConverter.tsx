@@ -1,9 +1,10 @@
 'use client'
 
 import Image from 'next/image'
-import Select from 'react-select'
+import Select, { components, SingleValueProps, OptionProps, SingleValue } from 'react-select'
 import { motion } from 'framer-motion'
-import { components } from 'react-select'
+
+type CurrencyEntry = { value: string; amount: string }
 
 const LoadingState = () => (
   <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-90 z-50">
@@ -43,7 +44,7 @@ const ConverterBlock = ({
 }: {
   title: string
   gradientClass: string
-  currencies: { value: string; amount: string }[]
+  currencies: CurrencyEntry[]
   currenciesList: string[]
   onAmountChange: (index: number, value: string) => void
   onCurrencyChange: (index: number, currency: string) => void
@@ -101,7 +102,6 @@ const ConverterBlock = ({
               placeholder="Сумма"
               className="flex-1 p-3 rounded-lg bg-gray-100 dark:bg-gray-700 focus:ring-2 focus:ring-red-500 dark:focus:ring-blue-500 transition-all duration-200"
             />
-            
             <div className="relative w-auto group">
               <div className="react-select-container">
                 <Select
@@ -109,13 +109,15 @@ const ConverterBlock = ({
                   options={currenciesList.map(cur => ({ value: cur, label: cur }))}
                   value={{ value: entry.value, label: entry.value }}
                   isSearchable={false}
-                  onChange={(selectedOption) => 
-                    onCurrencyChange(index, selectedOption?.value || 'BYN')
-                  }
+                  onChange={(newValue, _actionMeta) => {
+                    if (!newValue || Array.isArray(newValue)) return;
+                    const singleValue = newValue as { value: string; label: string };
+                    onCurrencyChange(index, singleValue.value);
+                  }}                  
                   classNamePrefix="react-select"
                   formatOptionLabel={(option) => option.label}
                   components={{
-                    SingleValue: ({ children, ...props }) => (
+                    SingleValue: (props: SingleValueProps<{ value: string; label: string }>) => (
                       <components.SingleValue {...props}>
                         <div className="flex items-center gap-2">
                           {props.data.value === 'XDR' ? (
@@ -133,7 +135,7 @@ const ConverterBlock = ({
                         </div>
                       </components.SingleValue>
                     ),
-                    Option: ({ children, ...props }) => (
+                    Option: (props: OptionProps<{ value: string; label: string }>) => (
                       <components.Option {...props}>
                         <div className="flex items-center gap-2">
                           {props.data.value === 'XDR' ? (
@@ -162,7 +164,6 @@ const ConverterBlock = ({
   </motion.div>
 )
 
-
 export default function CurrencyConverter({
   isLoading,
   isError,
@@ -188,9 +189,9 @@ export default function CurrencyConverter({
   isError: boolean
   rates: Record<string, number>
   currenciesList: string[]
-  nbrbCurrencies: { value: string; amount: string }[]
-  buyCurrencies: { value: string; amount: string }[]
-  sellCurrencies: { value: string; amount: string }[]
+  nbrbCurrencies: CurrencyEntry[]
+  buyCurrencies: CurrencyEntry[]
+  sellCurrencies: CurrencyEntry[]
   onNbrbAmountChange: (index: number, value: string) => void
   onNbrbCurrencyChange: (index: number, currency: string) => void
   onBuyAmountChange: (index: number, value: string) => void
