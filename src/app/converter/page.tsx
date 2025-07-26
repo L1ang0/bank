@@ -214,7 +214,6 @@ export default function HomePage() {
             <CurrencyConverter
               isLoading={isLoading}
               isError={isError}
-              rates={data?.rates ?? {}}
               currenciesList={data?.currencies ?? []}
               nbrbCurrencies={nbrbCurrencies}
               buyCurrencies={buyCurrencies}

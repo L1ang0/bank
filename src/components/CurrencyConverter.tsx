@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import Select, { components, SingleValueProps, OptionProps, SingleValue } from 'react-select'
+import Select, { components, SingleValueProps, OptionProps } from 'react-select'
 import { motion } from 'framer-motion'
 
 type CurrencyEntry = { value: string; amount: string }
@@ -109,7 +109,7 @@ const ConverterBlock = ({
                   options={currenciesList.map(cur => ({ value: cur, label: cur }))}
                   value={{ value: entry.value, label: entry.value }}
                   isSearchable={false}
-                  onChange={(newValue, _actionMeta) => {
+                  onChange={(newValue) => {
                     if (!newValue || Array.isArray(newValue)) return;
                     const singleValue = newValue as { value: string; label: string };
                     onCurrencyChange(index, singleValue.value);
@@ -167,7 +167,6 @@ const ConverterBlock = ({
 export default function CurrencyConverter({
   isLoading,
   isError,
-  rates,
   currenciesList,
   nbrbCurrencies,
   buyCurrencies,
@@ -187,7 +186,6 @@ export default function CurrencyConverter({
 }: {
   isLoading: boolean
   isError: boolean
-  rates: Record<string, number>
   currenciesList: string[]
   nbrbCurrencies: CurrencyEntry[]
   buyCurrencies: CurrencyEntry[]
