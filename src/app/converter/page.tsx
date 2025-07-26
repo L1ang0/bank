@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Header from '@/components/header'
 import SideNav from '@/components/sideNav'
 import CurrencyConverter from '@/components/CurrencyConverter'
+import RightSidebar from '@/components/RightSidebar'
 
 export default function HomePage() {
   const [sideOpen, setSideOpen] = useState(false)
@@ -16,11 +17,32 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
 
-  const [currencies, setCurrencies] = useState([
+  // States for three independent converters
+  const [nbrbCurrencies, setNbrbCurrencies] = useState([
     { value: 'BYN', amount: '' },
     { value: 'USD', amount: '' },
     { value: 'EUR', amount: '' },
-    { value: 'GBP', amount: '' },
+    { value: 'RUB', amount: '' },
+    { value: 'CNY', amount: '' },
+    { value: 'PLN', amount: '' },
+  ])
+
+  const [buyCurrencies, setBuyCurrencies] = useState([
+    { value: 'BYN', amount: '' },
+    { value: 'USD', amount: '' },
+    { value: 'EUR', amount: '' },
+    { value: 'RUB', amount: '' },
+    { value: 'CNY', amount: '' },
+    { value: 'PLN', amount: '' },
+  ])
+
+  const [sellCurrencies, setSellCurrencies] = useState([
+    { value: 'BYN', amount: '' },
+    { value: 'USD', amount: '' },
+    { value: 'EUR', amount: '' },
+    { value: 'RUB', amount: '' },
+    { value: 'CNY', amount: '' },
+    { value: 'PLN', amount: '' },
   ])
 
   useEffect(() => {
@@ -42,7 +64,79 @@ export default function HomePage() {
     fetchRates()
   }, [])
 
-  const handleAmountChange = (index: number, newAmount: string) => {
+  // Handlers for NBRB converter
+  const handleNbrbAmountChange = (index: number, newAmount: string) => {
+    handleAmountChange(index, newAmount, nbrbCurrencies, setNbrbCurrencies, data?.rates ?? {})
+  }
+
+  const handleNbrbCurrencyChange = (index: number, newCurrency: string) => {
+    handleCurrencyChange(index, newCurrency, nbrbCurrencies, setNbrbCurrencies, handleNbrbAmountChange)
+  }
+
+  // Handlers for buy converter
+  const handleBuyAmountChange = (index: number, newAmount: string) => {
+    const adjustedRates = adjustRates(data?.rates ?? {}, 'buy')
+    handleAmountChange(index, newAmount, buyCurrencies, setBuyCurrencies, adjustedRates)
+  }
+
+  const handleBuyCurrencyChange = (index: number, newCurrency: string) => {
+    handleCurrencyChange(index, newCurrency, buyCurrencies, setBuyCurrencies, handleBuyAmountChange)
+  }
+
+  // Handlers for sell converter
+  const handleSellAmountChange = (index: number, newAmount: string) => {
+    const adjustedRates = adjustRates(data?.rates ?? {}, 'sell')
+    handleAmountChange(index, newAmount, sellCurrencies, setSellCurrencies, adjustedRates)
+  }
+
+  const handleSellCurrencyChange = (index: number, newCurrency: string) => {
+    handleCurrencyChange(index, newCurrency, sellCurrencies, setSellCurrencies, handleSellAmountChange)
+  }
+
+  const handleAddNbrbCurrency = () => {
+    if (nbrbCurrencies.length < 10) {
+      setNbrbCurrencies([...nbrbCurrencies, { value: 'BYN', amount: '' }])
+    }
+  }
+  
+  const handleAddBuyCurrency = () => {
+    if (buyCurrencies.length < 10) {
+      setBuyCurrencies([...buyCurrencies, { value: 'BYN', amount: '' }])
+    }
+  }
+  
+  const handleAddSellCurrency = () => {
+    if (sellCurrencies.length < 10) {
+      setSellCurrencies([...sellCurrencies, { value: 'BYN', amount: '' }])
+    }
+  }
+  
+  const handleRemoveNbrbCurrency = () => {
+    if (nbrbCurrencies.length > 2) {
+      setNbrbCurrencies(nbrbCurrencies.slice(0, -1))
+    }
+  }
+  
+  const handleRemoveBuyCurrency = () => {
+    if (buyCurrencies.length > 2) {
+      setBuyCurrencies(buyCurrencies.slice(0, -1))
+    }
+  }
+  
+  const handleRemoveSellCurrency = () => {
+    if (sellCurrencies.length > 2) {
+      setSellCurrencies(sellCurrencies.slice(0, -1))
+    }
+  }
+
+  // Common amount change function
+  const handleAmountChange = (
+    index: number, 
+    newAmount: string, 
+    currencies: any[], 
+    setCurrencies: any, 
+    rates: Record<string, number>
+  ) => {
     const updated = [...currencies]
     if (newAmount === '') {
       updated.forEach((item) => (item.amount = ''))
@@ -52,30 +146,60 @@ export default function HomePage() {
 
     const baseCurrency = updated[index].value
     const baseValue = parseFloat(newAmount)
-    if (!data?.rates[baseCurrency] || isNaN(baseValue)) return
+    if (!rates[baseCurrency] || isNaN(baseValue)) return
 
-    const valueInBYN = baseValue * data.rates[baseCurrency]
+    const valueInBYN = baseValue * rates[baseCurrency]
 
     updated.forEach((item, i) => {
       if (i === index) {
         item.amount = newAmount
       } else {
-        const targetRate = data.rates[item.value]
-        item.amount = targetRate ? (valueInBYN / targetRate).toFixed(2) : ''
+        const targetRate = rates[item.value]
+        item.amount = targetRate ? (valueInBYN / targetRate).toFixed(4) : ''
       }
     })
 
     setCurrencies(updated)
   }
 
-  const handleCurrencyChange = (index: number, newCurrency: string) => {
+  // Common currency change function
+  const handleCurrencyChange = (
+    index: number, 
+    newCurrency: string, 
+    currencies: any[], 
+    setCurrencies: any, 
+    amountHandler: (index: number, amount: string) => void
+  ) => {
     const updated = [...currencies]
     updated[index].value = newCurrency
     setCurrencies(updated)
 
     if (updated[index].amount) {
-      handleAmountChange(index, updated[index].amount)
+      amountHandler(index, updated[index].amount)
     }
+  }
+
+  // Rate adjustment function for buy/sell
+  const adjustRates = (rates: Record<string, number>, type: 'buy' | 'sell') => {
+    const sellMargin = 2
+    const buyMargin = 2.5
+    const adjustedRates = {...rates}
+    
+    if (type === 'buy') {
+      Object.keys(adjustedRates).forEach(currency => {
+        if (currency !== 'BYN') {
+          adjustedRates[currency] *= (1 + buyMargin / 100)
+        }
+      })
+    } else if (type === 'sell') {
+      Object.keys(adjustedRates).forEach(currency => {
+        if (currency !== 'BYN') {
+          adjustedRates[currency] *= (1 - sellMargin / 100)
+        }
+      })
+    }
+    
+    return adjustedRates
   }
 
   return (
@@ -85,16 +209,32 @@ export default function HomePage() {
         <SideNav open={sideOpen} onClose={() => setSideOpen(false)} />
         
         <main className="flex-1 overflow-y-auto">
-          <CurrencyConverter
-            isLoading={isLoading}
-            isError={isError}
-            rates={data?.rates ?? {}}
-            currenciesList={data?.currencies ?? []}
-            currencies={currencies}
-            onAmountChange={handleAmountChange}
-            onCurrencyChange={handleCurrencyChange}
-          />
+            <CurrencyConverter
+              isLoading={isLoading}
+              isError={isError}
+              rates={data?.rates ?? {}}
+              currenciesList={data?.currencies ?? []}
+              nbrbCurrencies={nbrbCurrencies}
+              buyCurrencies={buyCurrencies}
+              sellCurrencies={sellCurrencies}
+              onNbrbAmountChange={handleNbrbAmountChange}
+              onNbrbCurrencyChange={handleNbrbCurrencyChange}
+              onBuyAmountChange={handleBuyAmountChange}
+              onBuyCurrencyChange={handleBuyCurrencyChange}
+              onSellAmountChange={handleSellAmountChange}
+              onSellCurrencyChange={handleSellCurrencyChange}
+              onAddNbrbCurrency={handleAddNbrbCurrency}
+              onAddBuyCurrency={handleAddBuyCurrency}
+              onAddSellCurrency={handleAddSellCurrency}
+              onRemoveNbrbCurrency={handleRemoveNbrbCurrency}
+              onRemoveBuyCurrency={handleRemoveBuyCurrency}
+              onRemoveSellCurrency={handleRemoveSellCurrency}
+            />
         </main>
+        <RightSidebar 
+          rates={data?.rates ?? {}} 
+          currenciesList={data?.currencies ?? []} 
+        />
       </div>
     </div>
   )
