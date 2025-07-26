@@ -22,3 +22,179 @@ body {
 .font-digital {
   font-family: 'Digital', 'Courier New', monospace;
 }
+
+.clip-custom-shape {
+  clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 85%);
+}
+
+/* --------------------------------SELECT--------------------------------*/
+/* Базовые стили для светлой темы */
+.react-select-container .react-select__control {
+  background-color: #ececee;
+  border-color: #eeecec;
+  min-height: 48px;
+  width: 100px;
+}
+
+.react-select-container .react-select__control:hover {
+  border-color: #b6a4a4;
+  -webkit-box-shadow: 9px 9px 15px 0px rgba(198, 77, 82, 0.13);
+  -moz-box-shadow: 9px 9px 15px 0px rgba(198, 77, 82, 0.13);
+  box-shadow: 9px 9px 15px 0px rgba(243, 98, 103, 0.13);
+  font-size: 15px;
+  transition: all 450ms ease;
+}
+
+.react-select-container .react-select__control--is-focused {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 1px #ef4444;
+}
+
+.react-select-container .react-select__menu {
+  max-height: 100px;
+  background-color: #f3f4f6;
+}
+
+.react-select-container .react-select__option {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.react-select-container .react-select__option--is-focused {
+  background-color: #f5e7eb;
+}
+
+.react-select-container .react-select__option--is-selected {
+  background-color: #ef4444;
+  color: white;
+}
+
+/* Темная тема */
+.dark .react-select-container .react-select__control {
+  background-color: #3d4758;
+  border-color: #513737;
+  color: white;
+}
+
+.dark .react-select-container .react-select__single-value {
+  color: white;
+}
+
+.dark .react-select-container .react-select__control:hover {
+  border-color: #826df9;
+  -webkit-box-shadow: 9px 9px 15px 0px rgba(88, 82, 214, 0.13);
+  -moz-box-shadow: 9px 9px 15px 0px rgba(84, 80, 209, 0.13);
+  box-shadow: 9px 9px 15px 0px rgba(90, 85, 245, 0.13);
+  font-size: 15px;
+  transition: all 450ms ease;
+  
+}
+
+.dark .react-select-container .react-select__control--is-focused {
+  border-color: #4444ef;
+  box-shadow: 0 0 0 1px #4444ef;
+}
+
+.dark .react-select-container .react-select__menu {
+  background-color: #111827;
+  color: #ececec
+}
+
+.dark .react-select-container .react-select__option {
+  background-color: #1f2937;
+  color: #f3f4f6;
+}
+
+.dark .react-select-container .react-select__option--is-focused {
+  background-color: #7777ff;
+}
+
+.dark .react-select-container .react-select__option--is-selected {
+  background-color: #4444ef;
+  color: white;
+}
+
+/* Адаптивные стили */
+@media (max-width: 640px) {
+  .react-select-container .react-select__control {
+    width: 80px;
+    min-height: 40px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+  .react-select-container .react-select__control {
+    width: 90px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .react-select-container .react-select__control {
+    width: 110px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .react-select-container .react-select__control {
+    width: 120px;
+  }
+}
+
+@media (max-width: 400px) {
+  .react-select-container .react-select__control {
+    width: 70px;
+  }
+}
+/* --------------------------------SELECT--------------------------------*/
+/* -------------------------------SCROLLBAR------------------------------*/
+/* Общие переменные для скроллбаров */
+:root {
+  /* Светлая тема */
+  --scrollbar-track: #f5e7eb;
+  --scrollbar-thumb: #ef4444;
+  --scrollbar-thumb-hover: #dc2626;
+  
+  /* Темная тема (по умолчанию - значения для светлой) */
+  --scrollbar-track-dark: #1f2937;
+  --scrollbar-thumb-dark: #4444ef;
+  --scrollbar-thumb-hover-dark: #3730a3;
+}
+
+/* Базовые стили (светлая тема) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 5px;
+  border: 2px solid var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Темная тема */
+.dark {
+  --scrollbar-track: var(--scrollbar-track-dark);
+  --scrollbar-thumb: var(--scrollbar-thumb-dark);
+  --scrollbar-thumb-hover: var(--scrollbar-thumb-hover-dark);
+}
+
+/* Форсированное применение для react-select */
+.dark .react-select__menu-list::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-dark) !important;
+}
+/* -------------------------------SCROLLBAR------------------------------*/
