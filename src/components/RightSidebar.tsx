@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import useExchangeRates from '@/hooks/useExchangeRates'
 
 export default function RightSidebar({
   rates,
@@ -11,13 +12,12 @@ export default function RightSidebar({
   rates: Record<string, number>
   currenciesList: string[]
 }) {
-  const [activeTable, setActiveTable] = useState<'nbrb' | 'exchange'>('nbrb')
-  const sellMargin = 2
-  const buyMargin = 2.5
-
-  const currencyListForTable = ['USD', 'EUR', 'GBP', 'JPY', 'CNY', 'RUB'].filter(c =>
-    currenciesList.includes(c)
-  )
+  const {
+    activeTable,
+    setActiveTable,
+    currencyListForTable,
+    exchangeRates
+    } = useExchangeRates(rates, currenciesList);
 
   return (
     <div className="right-0 top-0 bottom-0 h-full w-full xl:w-[410px] bg-[#f9fafb] dark:bg-[#1f2937] flex flex-col p-4 sm:p-6">
@@ -92,41 +92,35 @@ export default function RightSidebar({
                 </tr>
               </thead>
               <tbody>
-                {currencyListForTable.map((cur) => {
-                  const nbrbRate = rates[cur];
-                  if (!nbrbRate) return null;
-                  
-                  const sellRate = nbrbRate * (1 - sellMargin / 100);
-                  const buyRate = nbrbRate * (1 + buyMargin / 100);
-                  
-                  return (
-                    <tr key={cur} className="border-t border-gray-200 dark:border-gray-700">
-                      <td className="p-2 pl-4">
-                        <Image
-                          src={`https://flagcdn.com/24x18/${cur.slice(0, 2).toLowerCase()}.png`}
-                          alt={cur}
-                          width={24}
-                          height={18}
-                          className="rounded-sm hover:scale-115 transform transition-all duration-150"
-                        />
-                      </td>
-                      <td className="p-2 pl-7 hover:underline hover:underline-offset-2 transition-all duration-300">{cur}</td>
-                      <td className="p-2 pr-4 text-right text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 transition-all transform duration-300">
-                        {sellRate.toFixed(4)}
-                      </td>
-                      <td className="p-2 pr-4 text-right text-green-600 dark:text-green-400 hover:text-green-500 dark:hover:text-green-300 transition-all transform duration-300">
-                        {buyRate.toFixed(4)}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {exchangeRates.map((rate) => (
+                  <tr key={rate.currency} className="border-t border-gray-200 dark:border-gray-700">
+                    <td className="p-2 pl-4">
+                      <Image
+                        src={`https://flagcdn.com/24x18/${rate.currency.slice(0, 2).toLowerCase()}.png`}
+                        alt={rate.currency}
+                        width={24}
+                        height={18}
+                        className="rounded-sm hover:scale-115 transform transition-all duration-150"
+                      />
+                    </td>
+                    <td className="p-2 pl-7 hover:underline hover:underline-offset-2 transition-all duration-300">
+                      {rate.currency}
+                    </td>
+                    <td className="p-2 pr-4 text-right text-red-600 dark:text-red-400 hover:text-red-500 dark:hover:text-red-300 transition-all transform duration-300">
+                      {rate.sell.toFixed(4)}
+                    </td>
+                    <td className="p-2 pr-4 text-right text-green-600 dark:text-green-400 hover:text-green-500 dark:hover:text-green-300 transition-all transform duration-300">
+                      {rate.buy.toFixed(4)}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}
         </div>
       </motion.div>
       
-      {/* Calculator */}
+      {/* Calculator - остается без изменений */}
       <motion.div 
         initial={{ opacity: 0, y: 20, x: 10 }}
         animate={{ opacity: 1, y: 0, x:0 }}

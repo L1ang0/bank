@@ -69,6 +69,31 @@ body {
   color: white;
 }
 
+/* Убедитесь, что эти стили есть в вашем globals.css */
+.react-select__menu {
+  z-index: 9999999 !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  width: 100% !important;
+  margin-top: 4px !important;
+}
+
+.react-select-container {
+  position: relative;
+}
+
+.react-select__control {
+  z-index: 1;
+}
+
+/* Для родительского контейнера */
+.relative.w-auto.group {
+  position: relative;
+  z-index: auto;
+}
+
+
 /* Темная тема */
 .dark .react-select-container .react-select__control {
   background-color: #3d4758;
@@ -98,6 +123,24 @@ body {
 .dark .react-select-container .react-select__menu {
   background-color: #111827;
   color: #ececec
+}
+
+.dark .react-select__menu {
+  background-color: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+.dark .react-select__option {
+  background-color: #1f2937 !important;
+  color: white !important;
+}
+
+.dark .react-select__option--is-focused {
+  background-color: #374151 !important;
+}
+
+.dark .react-select__option--is-selected {
+  background-color: #4338ca !important;
 }
 
 .dark .react-select-container .react-select__option {

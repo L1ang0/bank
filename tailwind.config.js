@@ -6,9 +6,9 @@ module.exports = {
     ],
     darkMode: 'class',
     theme: {
-      extend: {
-        colors: {
-        },
+      backgroundImage: {
+        'gradient-text': 'linear-gradient(to right, #ff8a00, #e52e71)',
+        'gradient-text-dark': 'linear-gradient(to right, #4facfe, #00f2fe)',
       },
     },
     plugins: [],
