@@ -19,11 +19,19 @@ export default function HomePage() {
   } = useCurrencyData();
 
   return (
-    <div className="flex flex-col h-screen w-screen">
-      <Header onMenuClick={() => setSideOpen(!sideOpen)} />
-      <div className="flex flex-1 overflow-hidden">
+    <div className="flex flex-col h-screen w-screen lg:overflow-hidden">
+    <Header onMenuClick={() => setSideOpen(!sideOpen)} />
+
+      <div className="flex flex-col lg:flex-row flex-1 lg:overflow-hidden">
         <SideNav open={sideOpen} onClose={() => setSideOpen(false)} />
-        
+
+        <div className="block lg:hidden w-full">
+          <RightSidebar 
+            rates={data?.rates ?? {}} 
+            currenciesList={data?.currencies ?? []} 
+          />
+        </div>
+
         <main className="flex-1 overflow-y-auto">
           <CurrencyConverter
             isLoading={isLoading}
@@ -34,11 +42,15 @@ export default function HomePage() {
             sellConverter={sellConverter}
           />
         </main>
-        <RightSidebar 
-          rates={data?.rates ?? {}} 
-          currenciesList={data?.currencies ?? []} 
-        />
+
+        <div className="hidden lg:block h-full overflow-y-hidden">
+          <RightSidebar 
+            rates={data?.rates ?? {}} 
+            currenciesList={data?.currencies ?? []} 
+          />
+        </div>
       </div>
     </div>
+
   );
 }

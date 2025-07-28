@@ -76,7 +76,7 @@ const ErrorState = () => (
 const InfoTooltip = ({ content }: { content: string }) => (
   <div className="relative inline-block ml-1 mb-2 group">
     <span className="text-[12px] cursor-help opacity-70 hover:opacity-100">ℹ️</span>
-    <div className="absolute hidden group-hover:block bg-white dark:bg-gray-800 text-black dark:text-white p-2 rounded shadow-lg text-xs w-48 z-10 top-1/2 left-full transform -translate-y-1/2 ml-1">
+    <div className="absolute hidden group-hover:block bg-white dark:bg-gray-800 text-black dark:text-white p-2 rounded shadow-lg text-xs w-48  top-1/2 left-full transform -translate-y-1/2 ml-1">
       {content}
     </div>
   </div>
@@ -101,15 +101,16 @@ const ConverterBlock = ({
     if (converter.availableCurrencies.length === 0) return "Все валюты добавлены";
     return "Добавить валюту";
   }, [converter.currencies.length, converter.availableCurrencies.length]);
-
+  const [isRemoving, setIsRemoving] = useState(false);
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex-1 bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300 p-6 w-full mb-6 border border-gray-100 dark:border-gray-700"
+      className="flex-1 bg-white dark:bg-gray-800 rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-300
+      p-6 w-full mb-6 border border-gray-100 dark:border-gray-700"
     >
-      <div className={`${gradientClass} p-8 rounded-xl max-md:-mt-[50px] max-sm:-mx-[10px] relative overflow-hidden`}>
+      <div className={`${gradientClass} p-8 rounded-xl max-sm:-mx-[10px] relative overflow-hidden`}>
         {/* Анимированный фон */}
         <motion.div
           className="absolute inset-0 opacity-20"
@@ -128,11 +129,11 @@ const ConverterBlock = ({
           }}
         />
         
-        <div className="relative z-10">
+        <div className="relative ">
         <div className="flex justify-between items-center mb-6">
           <motion.h2 
             whileHover={{ x: 2 }}
-            className="text-2xl font-bold text-white drop-shadow-md"
+            className="xl:text-2xl lg:text-[18px] md:text-xl sm:text-[18px] text-[16px] italic max-sm:mr-2 font-bold text-white drop-shadow-md"
           >
             {title}
             {tooltipContent && <InfoTooltip content={tooltipContent} />}
@@ -144,7 +145,8 @@ const ConverterBlock = ({
                 whileTap={{ scale: 0.95 }}
                 onClick={converter.openAddCurrencyModal}
                 disabled={!converter.canAddCurrency}
-                className={`px-4 py-2 bg-white/90 dark:bg-gray-700/90 text-black dark:text-white rounded-lg transition-all ${
+                className={`px-4 py-2 xl:text-[18px] sm:text-[16px] xs:text-[12px] text-[11px] max-sm:-mr-0 max-sm:max-h-12 
+                 bg-white/90 dark:bg-gray-700/90 text-[#505050] dark:text-white hover:cursor-pointer rounded-lg transition-all italic ${
                   !converter.canAddCurrency
                     ? 'opacity-50 cursor-not-allowed' 
                     : 'hover:bg-gray-100 dark:hover:bg-gray-600 hover:shadow-md'
@@ -157,10 +159,19 @@ const ConverterBlock = ({
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={converter.removeCurrency}
-                disabled={!converter.canRemoveCurrency}
-                className={`px-4 py-2 bg-white/90 dark:bg-gray-700/90 text-black dark:text-white rounded-lg transition-all ${
-                  !converter.canRemoveCurrency 
+                onClick={() => {
+                  if (converter.canRemoveCurrency) {
+                    setIsRemoving(true);
+                    setTimeout(() => {
+                      converter.removeCurrency();
+                      setIsRemoving(false);
+                    }, 300);
+                  }
+                }}
+                disabled={!converter.canRemoveCurrency || isRemoving}
+                className={`px-4 py-2 max-sm:-mr-5.5 lg:-mr-2.5 xl:-mr-0 bg-white/90 dark:bg-gray-700/90 text-black dark:text-white 
+                rounded-lg transition-all hover:cursor-pointer ${
+                  !converter.canRemoveCurrency || isRemoving
                     ? 'opacity-50 cursor-not-allowed' 
                     : 'hover:bg-gray-100 dark:hover:bg-gray-600 hover:shadow-md'
                 }`}
@@ -179,17 +190,21 @@ const ConverterBlock = ({
             />
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {converter.currencies.map((entry, index) => (
-              <motion.div
-                key={`${title}-${index}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 bg-white/20 backdrop-blur-sm p-3 rounded-xl border border-white/10 hover:bg-white/30 transition-all relative"
-              >
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+              <AnimatePresence>
+                {converter.currencies.map((entry, index) => (
+                  <motion.div
+                    key={`${title}-${entry.value}-${index}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, x: -50, scale: 0.8 }}
+                    transition={{ duration: 0.3 }}
+                    layout
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center gap-2 bg-white/20 backdrop-blur-sm p-3 rounded-xl border border-white/10 hover:bg-white/30
+                    max-sm:min-w-[270px] transition-all relative"
+                  >
                 <motion.input
                   type="text"
                   value={entry.amount}
@@ -200,7 +215,8 @@ const ConverterBlock = ({
                     }
                   }}
                   placeholder="Сумма"
-                  className="flex-1 p-3 rounded-lg bg-white/70 dark:bg-gray-700/70 focus:ring-2 focus:ring-white/50 transition-all duration-200 hover:bg-white/80 dark:hover:bg-gray-600/80"
+                  className="flex-1 p-3 rounded-lg bg-white/70 dark:bg-gray-700/70 focus:ring-2 focus:ring-white/50 transition-all
+                   duration-200 hover:bg-white/80 dark:hover:bg-gray-600/80 xl:w-auto max-sm:min-w-[130px] focus:outline-none"
                 />
                 
                 <div className="relative w-auto group" style={{ zIndex: 9999 }}>
@@ -226,14 +242,14 @@ const ConverterBlock = ({
                     components={{
                       SingleValue: (props: SingleValueProps<{ value: string; label: string }>) => (
                         <components.SingleValue {...props}>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center sm:gap-2 gap-1">
                             {props.data.value === 'XDR' ? (
                               <span className="text-lg">🌐</span>
                             ) : (
                               <Image
                                 src={`https://flagcdn.com/24x18/${props.data.value.slice(0, 2).toLowerCase()}.png`}
                                 alt={props.data.value}
-                                width={24}
+                                width={22}
                                 height={18}
                                 className="rounded-sm"
                               />
@@ -265,6 +281,7 @@ const ConverterBlock = ({
                           <motion.div
                             animate={{ y: [0, 2, 0] }}
                             transition={{ duration: 1.5, repeat: Infinity }}
+                            className="2xl:text-[16px] xl:text-[14px] sm:text-[16px] text-[12px]"
                           >
                             ⬇️
                           </motion.div>
@@ -279,6 +296,7 @@ const ConverterBlock = ({
               </div>
               </motion.div>
             ))}
+            </AnimatePresence>
           </div>
           
           <motion.div 
@@ -288,7 +306,7 @@ const ConverterBlock = ({
             className="text-xs text-white/80 flex justify-between mt-5 pl-2"
           >
             <span>Обновлено: {new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</span>
-            <span>Курсы обновляются ежедневно</span>
+            <span className='max-sm:pl-15 pl-0'>Курсы обновляются ежедневно</span>
           </motion.div>
         </div>
       </div>
@@ -354,10 +372,10 @@ export default function CurrencyConverter({
               
               <button
                 onClick={() => setActiveConverter('buy')}
-                className={`flex-1 py-3 px-4 font-medium transition-colors cursor-pointer relative z-10 ${
+                className={`flex-1 py-3 px-4 font-medium transition-colors cursor-pointer relative z-0 ${
                   activeConverter === 'buy' 
                     ? 'text-green-600 dark:text-green-400' 
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 border-b-1 border-[#eeeeee] dark:border-[#444444]'
                 }`}
               >
                 <motion.span
@@ -371,10 +389,10 @@ export default function CurrencyConverter({
               
               <button
                 onClick={() => setActiveConverter('sell')}
-                className={`flex-1 py-3 px-4 font-medium transition-colors cursor-pointer relative z-10 ${
+                className={`flex-1 py-3 px-4 font-medium transition-colors cursor-pointer relative z-0 ${
                   activeConverter === 'sell' 
                     ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 border-b-1 border-[#eeeeee] dark:border-[#444444]'
                 }`}
               >
                 <motion.span
@@ -398,15 +416,15 @@ export default function CurrencyConverter({
                 {activeConverter === 'buy' ? (
                   <ConverterBlock
                     title="Купить валюту по курсу БГБ"
-                    gradientClass="bg-gradient-to-l from-green-700 via-emerald-600 to-teal-700"
+                    gradientClass="bg-gradient-to-l from-green-700 via-emerald-600 to-teal-700 "
                     converter={buyConverter}
                     currenciesList={currenciesList}
                     tooltipContent="Курсы покупки валюты банками. При конвертации могут применяться комиссии."
                   />
                 ) : (
                   <ConverterBlock
-                    title="Продать валюту по курсу БГБ"
-                    gradientClass="bg-gradient-to-l from-blue-700 via-indigo-600 to-purple-700"
+                    title="Сдать валюту по курсу БГБ"
+                    gradientClass="bg-gradient-to-l from-blue-700 via-indigo-600 to-purple-700 "
                     converter={sellConverter}
                     currenciesList={currenciesList}
                     tooltipContent="Курсы продажи валюты банками. Фактическая сумма может отличаться из-за комиссий."

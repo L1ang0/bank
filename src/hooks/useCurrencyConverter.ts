@@ -155,42 +155,88 @@ export const useCurrencyConverter = (
         i === index ? {...item, value: newCurrency} : item
       );
       
-      if (updated[index].amount) {
-        const adjustedRates = getAdjustedRates();
-        const baseAmount = updated[index].amount;
-        const baseValue = parseFloat(baseAmount);
-        
-        if (!adjustedRates[newCurrency] || isNaN(baseValue)) return updated;
-
-        const valueInBYN = baseValue * adjustedRates[newCurrency];
-
-        return updated.map(item => {
-          const targetRate = adjustedRates[item.value];
-          return {
-            ...item,
-            amount: targetRate ? (valueInBYN / targetRate).toFixed(4) : item.amount
-          };
-        });
-      }
+      const firstNonEmpty = updated.find(c => c.amount);
+      if (!firstNonEmpty) return updated;
+  
+      const adjustedRates = getAdjustedRates();
+      const baseAmount = firstNonEmpty.amount;
+      const baseValue = parseFloat(baseAmount);
+      const baseCurrency = firstNonEmpty.value;
       
-      return updated;
+      if (!adjustedRates[baseCurrency] || isNaN(baseValue)) return updated;
+  
+      const valueInBYN = baseValue * adjustedRates[baseCurrency];
+  
+      return updated.map(item => {
+        const targetRate = adjustedRates[item.value];
+        return {
+          ...item,
+          amount: targetRate ? (valueInBYN / targetRate).toFixed(4) : item.amount
+        };
+      });
     });
   }, [getAdjustedRates]);
 
   // Добавление валюты
   const addCurrency = useCallback((currency: string) => {
     if (currencies.length < 10) {
-      setCurrencies(prev => [...prev, { value: currency, amount: '' }]);
+      setCurrencies(prev => {
+        const newCurrencies = [...prev, { value: currency, amount: '' }];
+        
+        const firstNonEmpty = prev.find(c => c.amount);
+        
+        if (firstNonEmpty) {
+          const adjustedRates = getAdjustedRates();
+          const baseAmount = firstNonEmpty.amount;
+          const baseValue = parseFloat(baseAmount);
+          const baseCurrency = firstNonEmpty.value;
+          
+          if (adjustedRates[baseCurrency] && !isNaN(baseValue)) {
+            const valueInBYN = baseValue * adjustedRates[baseCurrency];
+            
+            return newCurrencies.map(item => ({
+              ...item,
+              amount: adjustedRates[item.value] 
+                ? (valueInBYN / adjustedRates[item.value]).toFixed(4) 
+                : ''
+            }));
+          }
+        }
+        
+        return newCurrencies;
+      });
       setIsAddingCurrency(false);
     }
-  }, [currencies.length]);
+  }, [currencies.length, getAdjustedRates]);
 
-  // Удаление валюты
   const removeCurrency = useCallback(() => {
     if (currencies.length > 2) {
-      setCurrencies(prev => prev.slice(0, -1));
+      setCurrencies(prev => {
+        const newCurrencies = prev.slice(0, -1);
+        // Обновляем суммы после удаления
+        if (newCurrencies.some(c => c.amount)) {
+          const adjustedRates = getAdjustedRates();
+          const firstNonEmpty = newCurrencies.findIndex(c => c.amount);
+          if (firstNonEmpty >= 0) {
+            const baseAmount = newCurrencies[firstNonEmpty].amount;
+            const baseValue = parseFloat(baseAmount);
+            const baseCurrency = newCurrencies[firstNonEmpty].value;
+            
+            if (adjustedRates[baseCurrency] && !isNaN(baseValue)) {
+              const valueInBYN = baseValue * adjustedRates[baseCurrency];
+              return newCurrencies.map(item => ({
+                ...item,
+                amount: adjustedRates[item.value] 
+                  ? (valueInBYN / adjustedRates[item.value]).toFixed(4) 
+                  : item.amount
+              }));
+            }
+          }
+        }
+        return newCurrencies;
+      });
     }
-  }, [currencies.length]);
+  }, [currencies.length, getAdjustedRates]);
 
   // Открытие модального окна добавления валюты
   const openAddCurrencyModal = useCallback(() => {
@@ -208,7 +254,6 @@ export const useCurrencyConverter = (
   useEffect(() => {
     if (!rates) return;
   
-    // Создаем копию текущего состояния для использования в эффекте
     const currentCurrencies = [...currencies];
     const adjustedRates = getAdjustedRates();
   
@@ -225,12 +270,11 @@ export const useCurrencyConverter = (
   
     const valueInBYN = baseValue * adjustedRates[baseCurrency];
   
-    setCurrencies(prev => prev.map((item, i) => {
-      if (i === firstNonEmptyIndex) return item;
+    setCurrencies(prev => prev.map(item => {
       const targetRate = adjustedRates[item.value];
       return {
         ...item,
-        amount: targetRate ? (valueInBYN / targetRate).toFixed(4) : ''
+        amount: targetRate ? (valueInBYN / targetRate).toFixed(4) : item.amount
       };
     }));
   }, [rates, type]);

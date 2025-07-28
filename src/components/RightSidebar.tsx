@@ -20,40 +20,41 @@ export default function RightSidebar({
     } = useExchangeRates(rates, currenciesList);
 
   return (
-    <div className="right-0 top-0 bottom-0 h-full w-full xl:w-[410px] bg-[#f9fafb] dark:bg-[#1f2937] flex flex-col p-4 sm:p-6">
+      <div className="w-full lg:w-[350px] xl:w-[400px] bg-[#f9fafb] dark:bg-[#1f2937] flex flex-col p-4 sm:p-4">
+
       {/* Table block */}
       <motion.div 
         initial={{ opacity: 0, y: -10, x: 10 }}
         animate={{ opacity: 1, y: 0, x: 0 }}
         transition={{ duration: 1.0 }}
-        className="bg-[#fcfff6] dark:bg-[#2d3748] rounded-2xl shadow-lg mb-6 overflow-hidden"
+        className="bg-[#fcfff6] dark:bg-[#2d3748] rounded-2xl shadow-lg mb-3 overflow-hidden"
       >
         <div className="flex p-3 pt-3 pb-1">
           <button
             onClick={() => setActiveTable('nbrb')}
-            className={`mr-2 px-3 py-1 rounded-lg text-sm font-medium hover:cursor-pointer transition-all transform hover:scale-102 duration-400 ${
+            className={`mr-2 px-3 py-1 rounded-lg text-sm font-bold text-[#444444] hover:cursor-pointer transition-all transform hover:scale-102 duration-400 ${
               activeTable === 'nbrb'
                 ? 'dark:bg-blue-500 hover:dark:bg-blue-400 dark:text-gray-100 hover:bg-red-300 bg-red-400 text-white'
-                : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
+                : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-[#dddddd]'
             }`}
           >
             Курсы НБРБ
           </button>
           <button
             onClick={() => setActiveTable('exchange')}
-            className={`px-3 py-1 rounded-lg text-sm font-medium hover:cursor-pointer transition-all transform duration-400 hover:scale-102 ${
+            className={`px-3 py-1 rounded-lg text-sm font-bold hover:cursor-pointer text-[#444444] transition-all transform duration-400 hover:scale-102 ${
               activeTable === 'exchange'
                 ? 'dark:bg-blue-500 hover:dark:bg-blue-400 dark:text-gray-100 hover:bg-red-300 bg-red-400 text-white'
-                : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'
+                : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-[#dddddd]'
             }`}
           >
             Обменные курсы
           </button>
         </div>
         <div className="p-3 pt-0 pb-0 mb-7 relative 
-                      before:-mb-0.5 before:absolute before:inset-1 before:rounded-xl before:border-2 before:border-red-400 dark:before:border-blue-600 before:pointer-events-none">
+                      before:-mb-2.5 before:absolute before:inset-1 before:rounded-xl before:border-2 before:border-red-400 dark:before:border-blue-600 before:pointer-events-none">
           {activeTable === 'nbrb' ? (
-            <table className="w-full text-sm relative z-10">
+            <table className="w-full text-sm relative ">
               <thead>
                 <tr>
                   <th className="text-left italic p-2">Флаг</th>
@@ -82,7 +83,7 @@ export default function RightSidebar({
               </tbody>
             </table>
           ) : (
-            <table className="w-full text-sm relative z-10">
+            <table className="w-full text-sm relative ">
               <thead>
                 <tr>
                   <th className="text-left italic p-2">Флаг</th>

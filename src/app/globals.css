@@ -30,8 +30,8 @@ body {
 /* --------------------------------SELECT--------------------------------*/
 /* Базовые стили для светлой темы */
 .react-select-container .react-select__control {
-  background-color: #ececee;
-  border-color: #eeecec;
+  background-color: #dcdcde;
+  border-color: #ccccce;
   min-height: 48px;
   width: 100px;
 }
@@ -52,7 +52,7 @@ body {
 
 .react-select-container .react-select__menu {
   max-height: 100px;
-  background-color: #f3f4f6;
+  background-color: #d5d5d5;
 }
 
 .react-select-container .react-select__option {
@@ -65,7 +65,7 @@ body {
 }
 
 .react-select-container .react-select__option--is-selected {
-  background-color: #ef4444;
+  background-color: #ef4444 !important;
   color: white;
 }
 
@@ -158,36 +158,54 @@ body {
 }
 
 /* Адаптивные стили */
-@media (max-width: 640px) {
+
+@media (max-width: 400px) {
   .react-select-container .react-select__control {
-    width: 80px;
-    min-height: 40px;
+    width: 90px;
+    font-size: 9px;
+    min-height: 45px;
+  }
+}
+
+@media (min-width: 401px) and (max-width: 640px) {
+  .react-select-container .react-select__control {
+    width: 105px;
+    font-size: 13px;
+    min-height: 45px;
   }
 }
 
 @media (min-width: 641px) and (max-width: 768px) {
   .react-select-container .react-select__control {
-    width: 90px;
+    width: 120px;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
   .react-select-container .react-select__control {
-    width: 110px;
+    width: 120px;
   }
 }
 
-@media (min-width: 1025px) {
+@media (min-width: 1025px) and (max-width: 1280px) {
   .react-select-container .react-select__control {
     width: 120px;
   }
 }
 
-@media (max-width: 400px) {
+@media (min-width: 1281px) and (max-width: 1307px) {
   .react-select-container .react-select__control {
-    width: 70px;
+    width: 110px;
   }
 }
+
+@media (min-width: 1307px) {
+  .react-select-container .react-select__control {
+    width: 120px;
+  }
+}
+
+
 /* --------------------------------SELECT--------------------------------*/
 /* -------------------------------SCROLLBAR------------------------------*/
 /* Общие переменные для скроллбаров */
