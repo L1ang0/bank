@@ -6,6 +6,8 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useCurrencyConverter } from '@/hooks/useCurrencyConverter';
 import { CurrencyModal } from './CurrencyModal'
 import { useMemo, useState } from 'react';
+import { NBRBChart } from './NBRBChart';
+
 
 type CurrencyConverter = ReturnType<typeof useCurrencyConverter>;
 
@@ -351,7 +353,14 @@ export default function CurrencyConverter({
             converter={nbrbConverter}
             currenciesList={currenciesList}
           />
-          
+          <motion.div
+          key="graph"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.5 }}>
+            <NBRBChart />
+          </motion.div>
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-100 dark:border-gray-700">
             <motion.div 
               className="flex mb-0 pt-5 px-6 relative"

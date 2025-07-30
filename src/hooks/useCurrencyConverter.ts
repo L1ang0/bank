@@ -148,34 +148,48 @@ export const useCurrencyConverter = (
     });
   }, [getAdjustedRates]);
 
-  // Обработчик изменения валюты
-  const handleCurrencyChange = useCallback((index: number, newCurrency: string) => {
-    setCurrencies(prev => {
-      const updated = prev.map((item, i) => 
-        i === index ? {...item, value: newCurrency} : item
-      );
-      
-      const firstNonEmpty = updated.find(c => c.amount);
-      if (!firstNonEmpty) return updated;
+    // Обработчик изменения валюты
+    const handleCurrencyChange = useCallback((index: number, newCurrency: string) => {
+      setCurrencies(prev => {
+        // Проверяем, есть ли уже такая валюта в других конвертерах
+        const existingIndex = prev.findIndex(item => item.value === newCurrency);
+        
+        if (existingIndex >= 0 && existingIndex !== index) {
+          // Если валюта уже есть - меняем местами
+          const oldCurrency = prev[index].value;
+          return prev.map((item, i) => {
+            if (i === index) return {...item, value: newCurrency};
+            if (i === existingIndex) return {...item, value: oldCurrency};
+            return item;
+          });
+        }
+        
+        // Если валюты нет - просто обновляем
+        const updated = prev.map((item, i) => 
+          i === index ? {...item, value: newCurrency} : item
+        );
+        
+        const firstNonEmpty = updated.find(c => c.amount);
+        if (!firstNonEmpty) return updated;
   
-      const adjustedRates = getAdjustedRates();
-      const baseAmount = firstNonEmpty.amount;
-      const baseValue = parseFloat(baseAmount);
-      const baseCurrency = firstNonEmpty.value;
-      
-      if (!adjustedRates[baseCurrency] || isNaN(baseValue)) return updated;
+        const adjustedRates = getAdjustedRates();
+        const baseAmount = firstNonEmpty.amount;
+        const baseValue = parseFloat(baseAmount);
+        const baseCurrency = firstNonEmpty.value;
+        
+        if (!adjustedRates[baseCurrency] || isNaN(baseValue)) return updated;
   
-      const valueInBYN = baseValue * adjustedRates[baseCurrency];
+        const valueInBYN = baseValue * adjustedRates[baseCurrency];
   
-      return updated.map(item => {
-        const targetRate = adjustedRates[item.value];
-        return {
-          ...item,
-          amount: targetRate ? (valueInBYN / targetRate).toFixed(4) : item.amount
-        };
+        return updated.map(item => {
+          const targetRate = adjustedRates[item.value];
+          return {
+            ...item,
+            amount: targetRate ? (valueInBYN / targetRate).toFixed(4) : item.amount
+          };
+        });
       });
-    });
-  }, [getAdjustedRates]);
+    }, [getAdjustedRates]);
 
   // Добавление валюты
   const addCurrency = useCallback((currency: string) => {
