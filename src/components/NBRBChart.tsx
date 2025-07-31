@@ -84,7 +84,7 @@ export const NBRBChart = () => {
   
             {/* Кнопки времени по центру - теперь в отдельном div с flex-grow и центрированием */}
             <div className="flex-grow flex justify-center">
-              <div className="flex z-50 p-2 rounded-br-2xl rounded-tl-2xl bg-gradient-to-tr
+              <div className="flex z-1 p-2 rounded-br-2xl rounded-tl-2xl bg-gradient-to-tr
               from-pink-500 via-rose-500 to-red-700 dark:from-cyan-400 dark:via-blue-500 dark:to-indigo-600 gap-1 md:gap-2">
                 {TIME_RANGES.map((range) => (
                   <button

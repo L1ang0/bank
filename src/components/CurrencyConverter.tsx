@@ -7,6 +7,7 @@ import { useCurrencyConverter } from '@/hooks/useCurrencyConverter';
 import { CurrencyModal } from './CurrencyModal'
 import { useMemo, useState } from 'react';
 import { NBRBChart } from './NBRBChart';
+import { PopularityChart } from './PopularityChart';
 
 
 type CurrencyConverter = ReturnType<typeof useCurrencyConverter>;
@@ -443,6 +444,7 @@ export default function CurrencyConverter({
             </AnimatePresence>
           </div>
         </motion.div>
+        <PopularityChart />
       </AnimatePresence>
     </div>
   )
