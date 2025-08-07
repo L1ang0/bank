@@ -14,7 +14,6 @@ const Calendar = () => {
     nextMonth,
     isHoliday,
     isToday,
-    getHolidayName
   } = useCalendarData();
 
   const renderDays = () => {
@@ -31,14 +30,13 @@ const Calendar = () => {
     for (let day = 1; day <= totalDays; day++) {
       const holiday = isHoliday(day);
       const today = isToday(day);
-      const holidayName = getHolidayName(day);
 
       days.push(
         <motion.div
           key={`day-${day}`}
           whileHover={{ scale: 1.05 }}
           className={`
-            h-10 sm:h-14 md:h-16 flex flex-col items-center justify-center rounded-lg md:rounded-xl
+            h-10 sm:h-14 md:h-16 flex items-center justify-center rounded-lg md:rounded-xl
             border border-gray-200 dark:border-gray-700
             ${holiday 
               ? 'bg-red-50/80 dark:bg-red-900/30 text-red-600 dark:text-red-400' 
@@ -47,16 +45,9 @@ const Calendar = () => {
               ? 'ring-1 sm:ring-2 ring-blue-500 dark:ring-blue-400 shadow-sm sm:shadow-md' 
               : 'shadow-xs sm:shadow-sm'}
             transition-all duration-200
-            p-1 sm:p-2
           `}
-          title={holidayName || undefined}
         >
           <span className="text-sm sm:text-base md:text-lg font-medium">{day}</span>
-          {holidayName && (
-            <span className="text-[0.6rem] sm:text-xs mt-0.5 sm:mt-1 px-1 sm:px-2 py-0.5 bg-red-100 dark:bg-red-900/50 rounded-full truncate max-w-full">
-              {holidayName}
-            </span>
-          )}
         </motion.div>
       );
     }

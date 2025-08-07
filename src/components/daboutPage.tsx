@@ -490,12 +490,12 @@ export default function DaboutPage() {
                   viewport={{ once: true }}
                   className={`group relative rounded-2xl bg-gradient-to-br ${lightColorClass} ${darkColorClass} backdrop-blur-md border ${lightBorderClass} ${darkBorderClass} ${lightHoverClass} ${darkHoverClass} transition-all duration-300 hover:shadow-xl dark:hover:shadow-xl`}
                 >
-                  <div className="h-full p-3 sm:p-6 flex flex-col items-center justify-center">
+                  <div className="h-full p-3 sm:p-6 flex flex-col items-center justify-center text-center">
                   <a 
                     href={partner.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className=""
+                    className="w-full flex flex-col items-center"
                   >
                     <div className="w-24 h-24 mb-5 flex items-center justify-center p-2">
                     <Image 
