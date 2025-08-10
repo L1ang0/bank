@@ -67,7 +67,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
                 </span>
               </span>
             </div>
-            <Link href="/" className="dark:hover:text-blue-200 hover:text-red-200 md:text-[20px] sm:text-[18px] text-[13px] rounded-2xl pl-4 pr-4 p-1 bg-gradient-to-r from-[#ff1a1a7a]/40 to-[#ff2a2aa4]/30
+            <Link href="/login" className="dark:hover:text-blue-200 hover:text-red-200 md:text-[20px] sm:text-[18px] text-[13px] rounded-2xl pl-4 pr-4 p-1 bg-gradient-to-r from-[#ff1a1a7a]/40 to-[#ff2a2aa4]/30
             dark:bg-gradient-to-r dark:from-[#1a1aff7a]/40 dark:to-[#2a2affa4]/30 hover:text-shadow-[7px_8px_12px_rgba(0,0,0,0.2)] transition-all duration-300
             border border-[#ffffff]/20 border-b-[#ff0f0f]/40 border-r-[#ff0f0f]/40
             dark:border-[#ffffff]/20 dark:border-b-[#0f0fff]/40 dark:border-r-[#0f0fff]/40
