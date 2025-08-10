@@ -5,7 +5,7 @@ import ThemeToggle from './ThemeToggle'
 export default function SideNav({ open, onClose }: { open: boolean, onClose: () => void }) {
     return (
         <div
-        className={`fixed left-0 md:top-18.5 sm:top-16 top-16 md:w-62 sm:w-48 w-43 bg-gradient-to-t from-[#ff1111] via-[#f74141] to-[#ff5151] dark:bg-gradient-to-t dark:from-[#1515f4] dark:via-[#3232f8] dark:to-[#4f4fff]
+        className={`fixed left-0 md:top-18.5 sm:top-16 top-16 md:w-75 sm:w-65 w-50 bg-gradient-to-t from-[#ff1111] via-[#f74141] to-[#ff5151] dark:bg-gradient-to-t dark:from-[#1515f4] dark:via-[#3232f8] dark:to-[#4f4fff]
         shadow-lg transition-transform z-50
         h-[calc(100vh-64px)] ${open ? 'translate-x-0' : '-translate-x-full'}`}
       >
@@ -23,7 +23,7 @@ export default function SideNav({ open, onClose }: { open: boolean, onClose: () 
           <Link href="/converter" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-[#ffffff] hover:text-[#efefef] dark:text-[#dfdfdf] dark:hover:text-[#cfcfcf]
               transition-all duration-300 transform hover:rotate-1
               hover:translate-x-2 hover:scale-[1.02] hover:text-shadow-[0px_8px_8px_rgba(0,0,0,0.9)]">Конвертер валют</Link>
-          <Link href="/about" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-[#ffffff] hover:text-[#efefef] dark:text-[#dfdfdf] dark:hover:text-[#cfcfcf]
+          <Link href="/dabout" className="md:text-[21px] sm:text-[19px] text-[17px] font-medium text-[#ffffff] hover:text-[#efefef] dark:text-[#dfdfdf] dark:hover:text-[#cfcfcf]
               transition-all duration-300 transform hover:rotate-1
               hover:translate-x-2 hover:scale-[1.02] hover:text-shadow-[0px_8px_8px_rgba(0,0,0,0.9)]">О банке</Link>
         </nav>
