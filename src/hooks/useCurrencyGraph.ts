@@ -150,9 +150,9 @@ const fetchHistoricalRates = async (from: string, to: string, days: number): Pro
 
 // Custom hooks
 export const useCurrencyRatesQuery = () => {
-  return useQuery<CurrentRate[]>({
+  return useQuery({
     queryKey: ['currencyRates'],
-    queryFn: async () => {
+    queryFn: async (): Promise<CurrentRate[]> => {
       const response = await fetch('https://api.nbrb.by/exrates/rates?periodicity=0');
       if (!response.ok) throw new Error('Failed to fetch rates');
       return response.json();
@@ -162,10 +162,10 @@ export const useCurrencyRatesQuery = () => {
 };
 
 export const useHistoricalRatesQuery = (from: string, to: string, days: number) => {
-  return useQuery<HistoricalRate[]>({
+  return useQuery({
     queryKey: ['historicalRates', from, to, days],
-    queryFn: () => fetchHistoricalRates(from, to, days),
-    select: (data) => {
+    queryFn: (): Promise<HistoricalRate[]> => fetchHistoricalRates(from, to, days),
+    select: (data: HistoricalRate[]) => {
       const endDate = new Date();
       const startDate = new Date();
       startDate.setDate(endDate.getDate() - days);
@@ -238,23 +238,23 @@ export const useCurrencyChart = () => {
     }
   };
 
-  const calculateCurrentRate = () => {
+  const calculateCurrentRate = (): string => {
     if (fromCurrency === toCurrency) return '1.0000';
     if (!currentRates) return '...';
     
     if (fromCurrency === 'BYN') {
-      const rate = currentRates.find((r) => r.Cur_Abbreviation === toCurrency)?.Cur_OfficialRate;
+      const rate = currentRates.find((r: CurrentRate) => r.Cur_Abbreviation === toCurrency)?.Cur_OfficialRate;
       const scale = CURRENCY_SCALES[toCurrency].scale;
       return rate ? (scale / rate).toString() : '...';
     } 
     else if (toCurrency === 'BYN') {
-      const rate = currentRates.find((r) => r.Cur_Abbreviation === fromCurrency)?.Cur_OfficialRate;
+      const rate = currentRates.find((r: CurrentRate) => r.Cur_Abbreviation === fromCurrency)?.Cur_OfficialRate;
       const scale = CURRENCY_SCALES[fromCurrency].scale;
       return rate ? (rate / scale).toString() : '...';
     }
     else {
-      const fromRate = currentRates.find((r) => r.Cur_Abbreviation === fromCurrency)?.Cur_OfficialRate;
-      const toRate = currentRates.find((r) => r.Cur_Abbreviation === toCurrency)?.Cur_OfficialRate;
+      const fromRate = currentRates.find((r: CurrentRate) => r.Cur_Abbreviation === fromCurrency)?.Cur_OfficialRate;
+      const toRate = currentRates.find((r: CurrentRate) => r.Cur_Abbreviation === toCurrency)?.Cur_OfficialRate;
       const fromScale = CURRENCY_SCALES[fromCurrency].scale;
       const toScale = CURRENCY_SCALES[toCurrency].scale;
       
@@ -264,9 +264,9 @@ export const useCurrencyChart = () => {
 
   const currentRate = calculateCurrentRate();
   const formattedRateDisplay = formatRateDisplay(currentRate, fromCurrency, toCurrency);
-
-  const validData = historicalData.filter(d => !isNaN(d.rate));
-  const validRates = validData.map(d => d.rate);
+  
+  const validData = historicalData.filter((d: HistoricalRate) => !isNaN(d.rate));
+  const validRates = validData.map((d: HistoricalRate) => d.rate);
   const minRate = validRates.length > 0 ? Math.min(...validRates) : 0;
   const maxRate = validRates.length > 0 ? Math.max(...validRates) : 1;
 
@@ -277,12 +277,12 @@ export const useCurrencyChart = () => {
     pointRadius: 2,
     pointHoverRadius: 4
   };
-
+  
   const chartData = {
-    labels: validData.map(item => item.date),
+    labels: validData.map((item: HistoricalRate) => item.date),
     datasets: [{
       label: `${fromCurrency}/${toCurrency}`,
-      data: validData.map(item => item.rate),
+      data: validData.map((item: HistoricalRate) => item.rate),
       borderColor: 'rgb(75, 192, 192)',
       backgroundColor: 'rgba(75, 192, 192, 0.5)',
       borderWidth: 2,
@@ -298,7 +298,7 @@ export const useCurrencyChart = () => {
       legend: { display: true, position: 'top' as const },
       title: { 
         display: true, 
-        text: `Курс ${fromCurrency} к ${toCurrency} за ${TIME_RANGES.find(r => r.value === timeRange)?.label}`
+        text: `Курс ${fromCurrency} к ${toCurrency} за ${TIME_RANGES.find((r: { value: number; label: string }) => r.value === timeRange)?.label}`
       },
       tooltip: {
         callbacks: {
