@@ -2,7 +2,7 @@
 
 import LoginForm from '@/components/auth/LoginForm'
 
-export default function LoginPage({ open, onClose }: { open: boolean, onClose: () => void }) {
+export default function LoginPage() {
 
   return (
     <div className="flex flex-col h-screen w-screen bg-gray-50">
