@@ -26,18 +26,12 @@ export default function AuthForm() {
   <div className="absolute inset-0 bg-gradient-to-br from-pink-500 via-rose-400 to-orange-300 dark:from-indigo-700 dark:via-purple-800 dark:to-pink-700" />
 
   <motion.div
-    animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.25, 0.15] }}
-    transition={{ duration: 12, repeat: Infinity }}
     className="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-pink-400 blur-3xl"
   />
   <motion.div
-    animate={{ scale: [1.1, 1.3, 1.1], opacity: [0.1, 0.2, 0.1] }}
-    transition={{ duration: 15, repeat: Infinity, delay: 3 }}
     className="absolute bottom-0 right-0 w-[30rem] h-[30rem] rounded-full bg-orange-300 blur-3xl"
   />
   <motion.div
-    animate={{ x: [0, 30, 0], y: [0, -20, 0], opacity: [0.12, 0.2, 0.12] }}
-    transition={{ duration: 18, repeat: Infinity }}
     className="absolute top-1/3 left-1/4 w-80 h-80 rounded-full bg-purple-400 blur-2xl"
   />
   
@@ -124,13 +118,9 @@ export default function AuthForm() {
         
         {/* Декоративные круги */}
         <motion.div 
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
           className="absolute -right-20 -top-20 w-40 h-40 rounded-full border-4 border-white/10"
         />
         <motion.div 
-          animate={{ rotate: -360 }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
           className="absolute -left-10 -bottom-10 w-24 h-24 rounded-full border-2 border-white/10"
         />
       </div>
@@ -365,34 +355,7 @@ export default function AuthForm() {
           className="hidden md:flex flex-1 relative z-10 "
         >
           <div className="absolute inset-0 bg-gradient-to-br from-rose-500/80 to-orange-600/40 dark:from-blue-700/40 dark:to-purple-800/80 rounded-r-xl overflow-hidden shadow-2xl">
-            {/* Анимированные элементы фона */}
-            <motion.div 
-              animate={{ 
-                x: [0, 20, 0],
-                y: [0, -15, 0],
-                rotate: [0, 5, 0]
-              }}
-              transition={{ 
-                duration: 15,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-blue-400/20 blur-xl"
-            />
-            <motion.div 
-              animate={{ 
-                x: [0, -30, 0],
-                y: [0, 20, 0],
-                rotate: [0, -8, 0]
-              }}
-              transition={{ 
-                duration: 20,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2
-              }}
-              className="absolute bottom-1/3 right-1/4 w-40 h-40 rounded-full bg-purple-400/20 blur-xl"
-            />
+
           </div>
           
           {/* Основное изображение */}

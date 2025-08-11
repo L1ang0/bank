@@ -64,7 +64,7 @@ export const NBRBChart = () => {
                     'sepia(0.3) hue-rotate(270deg) saturate(3)',
                     'sepia(0.3) hue-rotate(360deg) saturate(2)'
                   ],
-                  scale: [1, 1.1, 1]
+
                 }}
                 transition={{
                   duration: 6.5,
@@ -114,7 +114,7 @@ export const NBRBChart = () => {
                     'sepia(0.3) hue-rotate(270deg) saturate(3)',
                     'sepia(0.3) hue-rotate(360deg) saturate(2)'
                   ],
-                  scale: [1, 1.1, 1]
+
                 }}
                 transition={{
                   duration: 6.5,

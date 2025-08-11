@@ -8,6 +8,7 @@ import { CurrencyModal } from './CurrencyModal'
 import { useMemo, useState } from 'react';
 import { NBRBChart } from './NBRBChart';
 import { PopularityChart } from './PopularityChart';
+import { ChevronDown } from 'lucide-react';
 
 
 type CurrencyConverter = ReturnType<typeof useCurrencyConverter>;
@@ -114,23 +115,7 @@ const ConverterBlock = ({
       p-6 w-full mb-6 border border-gray-100 dark:border-gray-700"
     >
       <div className={`${gradientClass} p-8 rounded-xl max-sm:-mx-[10px] relative overflow-hidden`}>
-        {/* Анимированный фон */}
-        <motion.div
-          className="absolute inset-0 opacity-20"
-          animate={{
-            backgroundPosition: ['0% 0%', '100% 100%'],
-            backgroundSize: ['20px 20px', '40px 40px']
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            repeatType: 'reverse',
-            ease: 'linear'
-          }}
-          style={{
-            backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)',
-          }}
-        />
+
         
         <div className="relative ">
         <div className="flex justify-between items-center mb-6">
@@ -194,7 +179,7 @@ const ConverterBlock = ({
           )}
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-              <AnimatePresence>
+              
                 {converter.currencies.map((entry, index) => (
                   <motion.div
                     key={`${title}-${entry.value}-${index}`}
@@ -281,13 +266,13 @@ const ConverterBlock = ({
                       ),
                       DropdownIndicator: (props) => (
                         <components.DropdownIndicator {...props}>
-                          <motion.div
-                            animate={{ y: [0, 2, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                            className="2xl:text-[16px] xl:text-[14px] sm:text-[16px] text-[12px]"
-                          >
-                            ⬇️
-                          </motion.div>
+                           <motion.div
+                          animate={{ rotate: props.selectProps.menuIsOpen ? 180 : 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="text-gray-600 dark:text-gray-300"
+                        >
+                          <ChevronDown size={18} />
+                        </motion.div>
                         </components.DropdownIndicator>
                       ),
                       Menu: (props) => (
@@ -299,7 +284,7 @@ const ConverterBlock = ({
               </div>
               </motion.div>
             ))}
-            </AnimatePresence>
+           
           </div>
           
           <motion.div 

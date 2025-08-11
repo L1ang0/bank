@@ -26,41 +26,11 @@ export const PopularityChart = () => {
     >
       <div className="relative overflow-hidden rounded-xl h-full">
         <motion.div
-          className="absolute inset-0 z-0"
-          animate={{
-            background: [
-              'linear-gradient(45deg, rgba(99, 102, 241, 0.08) 0%, rgba(16, 185, 129, 0.05) 100%)',
-              'linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(239, 68, 68, 0.08) 100%)',
-              'linear-gradient(225deg, rgba(16, 185, 129, 0.08) 0%, rgba(99, 102, 241, 0.05) 100%)',
-            ],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            repeatType: 'reverse',
-            ease: 'linear'
-          }}
+            className="absolute inset-0 z-0 rounded-xl overflow-hidden"
         />
 
         <motion.div 
-          className="absolute inset-0 z-0 opacity-40 dark:opacity-30"
-          animate={{
-            backgroundPosition: ['0% 0%', '100% 100%'],
-          }}
-          transition={{
-            duration: 60,
-            repeat: Infinity,
-            repeatType: 'mirror',
-            ease: 'linear'
-          }}
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-              radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.8) 1px, transparent 1px)
-            `,
-            backgroundSize: '40px 40px',
-            maskImage: 'radial-gradient(circle at center, black 30%, transparent 70%)'
-          }}
+          className="absolute inset-0 z-0 opacity-40 dark:opacity-30 bg-gradient-to-br from-[#eae6ff] to-[#f4f4f4] dark:from-[#059193] dark:via-[#216572] dark:to-[#283d47]"
         />
 
         <motion.div 
@@ -115,12 +85,7 @@ export const PopularityChart = () => {
                           ? ['0% 0%', '100% 100%'] 
                           : '0% 0%'
                       }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        repeatType: 'reverse',
-                        ease: 'linear'
-                      }}
+
                       style={{
                         backgroundImage: `linear-gradient(45deg, ${item.color.start}, ${item.color.end}, ${item.color.start})`,
                         backgroundSize: '200% 200%'
@@ -175,7 +140,9 @@ export const PopularityChart = () => {
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ 
-                            width: hovered === item.currency ? '100%' : `${item.percentage}%`,
+                            width: hovered === item.currency 
+                              ? `${Math.min(item.percentage + 2, 100)}%` 
+                              : `${item.percentage}%`,
                             background: hovered === item.currency
                               ? `linear-gradient(to right, ${item.color.start}, ${item.color.end}, ${item.color.start})`
                               : `linear-gradient(to right, ${item.color.start}, ${item.color.end})`
@@ -191,11 +158,6 @@ export const PopularityChart = () => {
                             animate={{
                               x: hovered === item.currency ? ['-100%', '100%'] : '0%',
                               opacity: hovered === item.currency ? [0, 0.8, 0] : 0
-                            }}
-                            transition={{
-                              duration: 1.5,
-                              repeat: Infinity,
-                              ease: "easeInOut"
                             }}
                             className="absolute inset-y-0 w-1/3 bg-white/30"
                             style={{ 
@@ -362,14 +324,7 @@ export const PopularityChart = () => {
                         fontWeight="bold"
                         fill="#444"
                         opacity="0.9"
-                        animate={{
-                          opacity: [0.7, 0.9, 0.7]
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
+
                       >
                         Наведите
                       </motion.text>
@@ -409,7 +364,7 @@ export const PopularityChart = () => {
                 <div>
                   <h4 className="font-bold text-gray-800 dark:text-white text-sm underline underline-offset-2">Топ валюты</h4>
                   <p className="text-xs text-gray-600 dark:text-white/70 mt-1">
-                    USD и EUR составляют 72.3% всех операций. 
+                    USD и EUR составляют 73.7% всех операций. 
                   </p>
                 </div>
               </div>
@@ -432,8 +387,8 @@ export const PopularityChart = () => {
                 <div>
                   <h4 className="font-bold text-gray-800 dark:text-white text-sm underline underline-offset-2">Топ валюты</h4>
                   <p className="text-xs text-gray-600 dark:text-white/70 mt-1">
-                    RUB занимает 17.7%, что на 5.2% больше чем в прошлом квартале.
-                    Другие валюты (GBP, JPY, CHF) - 5%.
+                    RUB занимает 15.7%, что на 5.2% больше чем в прошлом квартале.
+                    Другие валюты (GBP, JPY, CHF) - 4%.
                   </p>
                 </div>
               </div>
