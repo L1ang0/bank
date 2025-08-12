@@ -35,7 +35,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
               </span>
               </button>
               <Image src="/logo.png" alt="Bank Logo" width={140} height={60}  className="md:h-17 sm:h-14 h-14 md:w-35 sm:w-30 w-30 md:ml-2 sm:ml-0 -ml-5 
-              dark:sepia-[0.3] dark:hue-rotate-[210deg] dark:saturate-200 animate-[pulse_2.5s_ease-in-out_infinite] [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]" />
+              dark:sepia-[0.3] dark:hue-rotate-[210deg] dark:saturate-200 animate-[pulse_2.5s_ease-in-out_infinite] [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]" priority/>
               <Link href="/" className="md:ml-2 ms:-ml-2 -ml-5 md:text-2xl sm:text-[18px] text-[14px] font-bold text-white dark:text-blue-100 hover:text-red-200
               dark:hover:text-blue-200 transition-colors duration-300 text-shadow-[7px_2px_6px_rgba(0,0,0,0.2)] hover:text-shadow-[11px_5px_9px_rgba(0,0,0,0.2)]">
                 БГБ Банк

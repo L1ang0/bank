@@ -240,6 +240,7 @@ const ConverterBlock = ({
                                 width={22}
                                 height={18}
                                 className="rounded-sm"
+                                unoptimized
                               />
                             )}
                             {props.data.value}
@@ -258,6 +259,7 @@ const ConverterBlock = ({
                                 width={24}
                                 height={18}
                                 className="rounded-sm"
+                                unoptimized
                               />
                             )}
                             {props.data.value}
@@ -267,6 +269,7 @@ const ConverterBlock = ({
                       DropdownIndicator: (props) => (
                         <components.DropdownIndicator {...props}>
                            <motion.div
+                          initial={{ rotate: 0 }}
                           animate={{ rotate: props.selectProps.menuIsOpen ? 180 : 0 }}
                           transition={{ duration: 0.2 }}
                           className="text-gray-600 dark:text-gray-300"
@@ -324,7 +327,7 @@ export default function CurrencyConverter({
 
   return (
     <div className="w-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white p-4 sm:p-6 min-h-screen">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="popLayout">
         <motion.div
           key="converter"
           initial={{ opacity: 0 }}
@@ -400,7 +403,7 @@ export default function CurrencyConverter({
               </button>
             </motion.div>
 
-            <AnimatePresence mode="wait">
+            <AnimatePresence mode="popLayout">
               <motion.div
                 key={activeConverter}
                 initial={{ opacity: 0, y: 10 }}

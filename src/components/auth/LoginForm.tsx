@@ -36,7 +36,7 @@ export default function AuthForm() {
   />
   
       {/* Контейнер для кнопок вверху */}
-      <div className="absolute top-2 left-0 right-0 px-6 z-20 flex justify-between items-center">
+      <div className="absolute top-2 max-[600px]:top-7.5 left-0 right-0 px-6 z-20 flex justify-between items-center">
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -54,11 +54,11 @@ export default function AuthForm() {
             transition={{ type: 'spring', stiffness: 400, damping: 10 }}
             className="flex items-center"
           >
-            <svg className="w-6 h-6 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="xl:w-6 xl:h-6 h-5 w-5 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
           </motion.div>
-          <span className="text-sm font-semibold  text-[#ffc2d4] dark:text-[#84fff7]  ">
+          <span className="md:text-sm text-[12px] font-semibold  text-[#ffc2d4] dark:text-[#c1fffb]  ">
             Главное меню
           </span>
         </motion.button>
@@ -70,7 +70,7 @@ export default function AuthForm() {
           transition={{ delay: 0.1 }}
           className="flex items-center"
         >
-          <div className="bg-gradient-to-br h-17 pr-5 from-orange-400 to-rose-500 dark:from-indigo-500 dark:to-pink-600 backdrop-blur-lg p-1.5 rounded-3xl shadow-xl">
+          <div className="bg-gradient-to-br xl:h-17 md:h-15 sm:h-15 h-12 md:pr-5 pr-3.5  md:p-0.5 p-0 from-orange-400 to-rose-500 dark:from-indigo-500 dark:to-pink-600 backdrop-blur-lg  rounded-3xl shadow-xl">
             <ThemeToggle />
           </div>
         </motion.div>
@@ -80,7 +80,7 @@ export default function AuthForm() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-4xl mx-4 mt-3 flex relative"
+        className="w-full max-w-[70vw] max-sm:max-w-[85vw] mx-auto mt-3 max-[600px]:mt-0 flex relative"
       >
         {/* общая цветная тень для всего контейнера */}
         <motion.div 
@@ -98,7 +98,7 @@ export default function AuthForm() {
         >
 
     <motion.div 
-      className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md rounded-l-xl shadow-2xl overflow-hidden transition-all duration-300 h-full"
+      className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md min-[1000px]:rounded-l-xl max-[1000px]:rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 h-full"
     >
       {/* Заголовок формы */}
       <div className="relative overflow-hidden">
@@ -106,12 +106,12 @@ export default function AuthForm() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gradient-to-r from-orange-400 to-rose-500 dark:from-blue-500 dark:to-purple-600 p-6 text-center"
+          className="bg-gradient-to-r from-orange-400 to-rose-500 dark:from-blue-500 dark:to-purple-600 p-4 text-center"
         >
-          <h1 className="text-3xl font-bold text-white tracking-tight">
+          <h1 className="sm:text-3xl text-2xl font-bold text-white tracking-tight">
             {isLogin ? 'Добро пожаловать' : 'Создайте аккаунт'}
           </h1>
-          <p className="mt-2 text-orange-100 dark:text-blue-100 italic">
+          <p className="mt-2 lg:text-xl md:text-[18px] text-[16px] text-orange-100 dark:text-blue-100 italic">
             {isLogin ? 'Войдите в свой аккаунт' : 'Начните использовать сервис'}
           </p>
         </motion.div>
@@ -126,7 +126,7 @@ export default function AuthForm() {
       </div>
 
     {/* Тело формы */}
-    <form onSubmit={handleSubmit} className="pt-4 p-7 space-y-4">
+    <form onSubmit={handleSubmit} className="pt-3 p-6 space-y-2">
     {!isLogin && (
       <>
         <motion.div
@@ -144,7 +144,7 @@ export default function AuthForm() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
+              className="w-full pl-11 pr-4 py-3 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
               placeholder="Ваше полное имя"
               required
             />
@@ -166,7 +166,7 @@ export default function AuthForm() {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full pl-11 pr-4 py-3.5 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
+              className="w-full pl-11 pr-4 py-3 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
               placeholder="+375 (__) ___-__-__"
               required
               minLength={13}
@@ -193,7 +193,7 @@ export default function AuthForm() {
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        className="w-full pl-11 pr-4 py-3.5 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
+        className="w-full pl-11 pr-4 py-3 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
         placeholder="your@email.com"
         required
       />
@@ -216,7 +216,7 @@ export default function AuthForm() {
         type={showPassword ? "text" : "password"}
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="w-full pl-11 pr-11 py-3.5 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
+        className="w-full pl-11 pr-11 py-3 bg-white/80 dark:bg-gray-800/80 border border-gray-300/70 dark:border-gray-600/70 rounded-xl focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 shadow-sm transition-all duration-300 hover:shadow-md"
         placeholder="••••••••"
         required
         minLength={6}
@@ -241,7 +241,7 @@ export default function AuthForm() {
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.3, delay: 0.2 }}
-    className="pt-2"
+    className="pt-1"
   >
     <motion.button
       whileHover={{ 
@@ -252,7 +252,7 @@ export default function AuthForm() {
       type="submit"
       disabled={isLoading}
       className={`w-full [--shadow-color:rgba(239,68,68,0.5)] 
-      dark:[--shadow-color:rgba(59,130,246,0.5)] py-4 px-6 rounded-xl font-semibold text-white 
+      dark:[--shadow-color:rgba(59,130,246,0.5)] py-3 px-6 rounded-xl font-semibold text-white 
       transition-all duration-300 relative cursor-pointer overflow-hidden ${
         isLoading 
           ? 'bg-red-400 dark:bg-blue-400 cursor-not-allowed' 
@@ -266,7 +266,7 @@ export default function AuthForm() {
         </span>
       ) : (
         <>
-          <span className="relative z-10">{isLogin ? 'Войти в систему' : 'Зарегистрироваться'}</span>
+          <span className="relative max-sm:text-[15px] z-10">{isLogin ? 'Войти в систему' : 'Зарегистрироваться'}</span>
           <motion.span 
             className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"
             initial={{ opacity: 0 }}
@@ -352,14 +352,14 @@ export default function AuthForm() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.3 }}
           whileHover={{ y: -5 }}
-          className="hidden md:flex flex-1 relative z-10 "
+          className="hidden min-[1000px]:flex flex-1 relative z-10 "
         >
           <div className="absolute inset-0 bg-gradient-to-br from-rose-500/80 to-orange-600/40 dark:from-blue-700/40 dark:to-purple-800/80 rounded-r-xl overflow-hidden shadow-2xl">
 
           </div>
           
           {/* Основное изображение */}
-          <div className="relative z-10 flex items-center justify-center h-full w-full p-4 pl-10">
+          <div className="relative z-10 flex items-center justify-center h-full w-full p-2 xl:p-4 :pl-5 xl:pl-10">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -388,17 +388,21 @@ export default function AuthForm() {
               )}
               
               {/* Блок с сообщением, меняющий положение при переключении */}
-              <motion.div
+                <motion.div
                 key={isLogin ? "login-message" : "register-message"}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
-                className={`absolute ${
-                  isLogin 
-                    ? 'top-13 -left-5'  // Позиция для входа
-                    : '-top-25 left-5'  // Позиция для регистрации
-                } bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-4 rounded-xl shadow-lg`}
+                className={`
+                  absolute 
+                  ${isLogin 
+                    ? 'top-[13%] left-[1%] min-[1000px]:top-[13.5%] min-[1000px]:left-[-1.5%] min-[1100px]:top-[15.5%] min-[1100px]:left-[-1.5%] min-[1200px]:top-[18%] min-[1200px]:left-[-1.5%] min-[1280px]:top-[17%] min-[1280px]:left-[-7%] min-[1360px]:top-[19%] min-[1360px]:left-[-7.5%] min-[1439px]:top-[21.5%] min-[1439px]:left-[-7.5%]' 
+                    : 'top-[13%] left-[1%] min-[1000px]:top-[-25%] min-[1000px]:left-[21%] min-[1100px]:top-[-23%] min-[1100px]:left-[23.5%] min-[1200px]:top-[-21%] min-[1200px]:left-[25%] xl:top-[-20.5%] xl:left-[26%]'
+                  }
+                  bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-3 md:p-4 
+                  rounded-xl shadow-lg w-auto max-w-[80%] transition-all duration-300
+                `}
               >
                 <div className="text-sm font-medium text-gray-700 dark:text-gray-200">
                   {isLogin ? 'С возвращением!' : 'Присоединяйтесь к нам!'}

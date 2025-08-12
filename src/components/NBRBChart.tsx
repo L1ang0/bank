@@ -78,6 +78,7 @@ export const NBRBChart = () => {
                   width={240} 
                   height={60}  
                   className="h-20 w-full xl:ml-15 dark:sepia-[0.3] dark:saturate-200 [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]" 
+                  priority
                 />
               </motion.div>
             </div>
@@ -128,6 +129,7 @@ export const NBRBChart = () => {
                   width={140} 
                   height={60}  
                   className="h-20 xl:-ml-15 w-full dark:sepia-[0.3] dark:saturate-200 [filter:drop-shadow(0_10px_15px_rgba(0,0,0,0.4))]" 
+                  priority
                 />
               </motion.div>
             </div>
@@ -188,6 +190,7 @@ export const NBRBChart = () => {
                                 width={22}
                                 height={18}
                                 className="rounded-sm"
+                                unoptimized
                               />
                               {props.data.value}
                             </div>
@@ -202,6 +205,7 @@ export const NBRBChart = () => {
                                 width={24}
                                 height={18}
                                 className="rounded-sm"
+                                unoptimized
                               />
                               {props.data.value}
                             </div>
@@ -299,6 +303,7 @@ export const NBRBChart = () => {
                                 width={22}
                                 height={18}
                                 className="rounded-sm"
+                                unoptimized
                               />
                               {props.data.value}
                             </div>
@@ -313,6 +318,7 @@ export const NBRBChart = () => {
                                 width={24}
                                 height={18}
                                 className="rounded-sm"
+                                unoptimized
                               />
                               {props.data.value}
                             </div>

@@ -204,9 +204,9 @@ export const PopularityChart = () => {
                 {slices.map(({ currency, d, dx, dy, index: i, color }) => (
                   <motion.g
                     key={currency}
-                    transform={`translate(${dx}, ${dy})`}
+                    initial={{ transform: `translate(0, 0)` }}
                     animate={{
-                      transform: `translate(${dx}, ${dy})`
+                      transform: `translate(${dx || 0}, ${dy || 0})`
                     }}
                     transition={{
                       type: 'spring',
@@ -249,19 +249,6 @@ export const PopularityChart = () => {
                         stroke: hovered === currency ? 'white' : 'transparent',
                         strokeWidth: hovered === currency ? 2 : 0,
                       }}
-                      whileHover={{
-                        scale: 1.07,
-                        filter: `drop-shadow(0 0 25px ${color.start}90)`,
-                        transition: { 
-                          duration: 0.3,
-                          type: 'spring',
-                          bounce: 0.6
-                        }
-                      }}
-                      whileTap={{
-                        scale: 0.98,
-                        filter: 'drop-shadow(0 0 5px rgba(0,0,0,0.2))'
-                      }}
                     />
                   </motion.g>
                 ))}
@@ -281,7 +268,7 @@ export const PopularityChart = () => {
                   }}
                 />
                 
-                <AnimatePresence mode="wait">
+                <AnimatePresence mode="popLayout">
                   {hovered ? (
                     <motion.text
                       key="hovered"
