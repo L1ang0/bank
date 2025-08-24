@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["@supabase/auth-helpers-nextjs"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
