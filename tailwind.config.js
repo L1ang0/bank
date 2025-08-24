@@ -4,18 +4,11 @@ module.exports = {
       './src/app/**/*.{js,ts,jsx,tsx}',
       './src/components/**/*.{js,ts,jsx,tsx}',
     ],
-    darkMode: 'media', // или 'class', если хочешь переключать вручную
+    darkMode: 'class',
     theme: {
-      extend: {
-        colors: {
-          bg: 'var(--color-bg)',
-          text: 'var(--color-text)',
-          primary: 'var(--color-primary)',
-          secondary: 'var(--color-secondary)',
-          surface: 'var(--color-surface)',
-          card: 'var(--color-card)',
-          muted: 'var(--color-muted)',
-        },
+      backgroundImage: {
+        'gradient-text': 'linear-gradient(to right, #ff8a00, #e52e71)',
+        'gradient-text-dark': 'linear-gradient(to right, #4facfe, #00f2fe)',
       },
     },
     plugins: [],
