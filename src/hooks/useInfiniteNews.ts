@@ -1,18 +1,21 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 
-type Article = {
+export type Article = {
   title: string
   url: string
   source: { name: string }
 }
 
-type NewsResponse = {
+export type NewsResponse = {
   articles: Article[]
   nextPage: number
 }
 
-async function fetchNews({ pageParam = 1 }): Promise<NewsResponse> {
+async function fetchNews({ pageParam = 1 }: { pageParam?: number }): Promise<NewsResponse> {
   const res = await fetch(`/api/news?page=${pageParam}`)
+  if (!res.ok) {
+    throw new Error('Failed to fetch news')
+  }
   const data = await res.json()
   return {
     articles: data.articles,
@@ -25,7 +28,7 @@ export function useInfiniteNews() {
     queryKey: ['news'],
     queryFn: fetchNews,
     initialPageParam: 1,
-    getNextPageParam: (lastPage) =>
+    getNextPageParam: (lastPage: NewsResponse) =>
       lastPage.articles.length < 10 ? undefined : lastPage.nextPage,
   })
 }

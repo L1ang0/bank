@@ -109,6 +109,7 @@ export default function MainContent() {
       height={250}
       className="max-xl:-mb-[10px] xl:w-[800px] md:w-[350px] sm:w-[500px] w-[250px] md:h-auto sm:h-auto h-[90px] max-sm:-mt-[5px]  
       drop-shadow-lg dark:brightness-85 dark:contrast-110 dark:sepia-[0.3] dark:hue-rotate-[210deg] dark:saturate-200"
+      priority
     />
 
     </motion.div>

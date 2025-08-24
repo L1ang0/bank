@@ -5,7 +5,7 @@ import Header from '@/components/header'
 import SideNav from '@/components/sideNav'
 import MainContent from '@/components/mainContent'
 import NewsPanel from '@/components/newsPanel'
-import { useInfiniteNews } from '@/hooks/useInfiniteNews'
+import { useInfiniteNews, type NewsResponse } from '@/hooks/useInfiniteNews'
 
 export default function HomePage() {
   const [sideOpen, setSideOpen] = useState(false)
@@ -35,7 +35,7 @@ export default function HomePage() {
     return () => observer.disconnect()
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
-  const allArticles = data?.pages.flatMap(page => page.articles) ?? []
+  const allArticles = data?.pages.flatMap((page: NewsResponse) => page.articles) ?? []
 
   return (
     <div className="flex flex-col h-screen w-screen">

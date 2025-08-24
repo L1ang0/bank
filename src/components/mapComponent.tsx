@@ -6,13 +6,13 @@ import 'leaflet/dist/leaflet.css'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { exchangePoints } from '@/data/exchangePoints'
 
-// Создаем компонент-обертку для динамического импорта
-const DynamicMap = ({ center }: { center: { lat: number; lng: number } }) => {
-  const [isClient, setIsClient] = useState(false)
+// компонент-обертка для динамического импорта
+export default function MapComponent({ center }: { center: { lat: number; lng: number } }) {
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true)
-    
+    setIsClient(true);
+
     delete (L.Icon.Default.prototype as { _getIconUrl?: unknown })._getIconUrl
     L.Icon.Default.mergeOptions({
       iconRetinaUrl: '/marker-icon-2x.png',
@@ -82,7 +82,3 @@ const DynamicMap = ({ center }: { center: { lat: number; lng: number } }) => {
   )
 }
 
-// Экспортируем через динамический импорт с отключенным SSR
-export default function MapComponent({ center }: { center: { lat: number; lng: number } }) {
-  return <DynamicMap center={center} />
-}

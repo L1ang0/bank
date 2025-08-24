@@ -4,9 +4,10 @@ import { motion } from 'framer-motion'
 import React from 'react'
 import dynamic from 'next/dynamic'
 import { useMapData } from '@/hooks/useMapData'
-import { useDaboutPage } from '@/hooks/useDaboutPage'
 import Calendar from '@/components/Calendar'
 import Image from 'next/image'
+import { partners, workingHours, colors } from '@/data/DaboutPage';
+import { exchangePoints } from '@/data/exchangePoints'
 
 const MapWithNoSSR = dynamic(
   () => import('@/components/mapComponent').then((mod) => mod.default),
@@ -83,7 +84,7 @@ const ErrorState = ({ onRetry }: { onRetry: () => void }) => (
 
 export default function DaboutPage() {
   const { mapData, isLoading, isError } = useMapData()
-  const { partners, workingHours, colors, exchangePoints } = useDaboutPage()
+
 
   if (isLoading) return <LoadingState />
   if (isError) return <ErrorState onRetry={() => window.location.reload()} />
@@ -101,45 +102,12 @@ export default function DaboutPage() {
     {/* Анимированная градиентная полоса с пульсацией */}
     <motion.div 
       className="absolute inset-x-0 top-1/2 h-0.5 bg-gradient-to-r from-transparent via-rose-400 dark:via-blue-400 to-transparent"
-      animate={{
-        opacity: [0.7, 1, 0.7],
-      }}
-      transition={{
-        duration: 3,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
     />
-  
-  {/* Тонкая анимация фона для заголовка */}
-  <motion.div 
-    className="absolute inset-0 opacity-10 dark:opacity-20"
-    animate={{
-      background: [
-        'radial-gradient(circle at 10% 50%, #fda4af, transparent)',
-        'radial-gradient(circle at 90% 50%, #fda4af, transparent)',
-        'radial-gradient(circle at 50% 20%, #fda4af, transparent)',
-        'radial-gradient(circle at 10% 50%, #fda4af, transparent)',
-      ]
-    }}
-    transition={{
-      duration: 15,
-      repeat: Infinity,
-      ease: "linear"
-    }}
-  />
   
   <div className="inline-block relative mb-8">
     <motion.div 
       className="absolute -inset-1 bg-gradient-to-r from-rose-400 to-red-500 dark:from-blue-400 dark:to-indigo-600 rounded-lg blur opacity-75"
-      animate={{
-        rotate: [0, 1.5, -1.5, 0],
-      }}
-      transition={{
-        duration: 6,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
+
     />
     
     <motion.h1 
@@ -148,18 +116,7 @@ export default function DaboutPage() {
         y: -3,
         transition: { type: "spring", stiffness: 300 }
       }}
-      animate={{
-        boxShadow: [
-          "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02)",
-          "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-          "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.02)"
-        ]
-      }}
-      transition={{
-        duration: 4,
-        repeat: Infinity,
-        repeatType: "reverse"
-      }}
+
     >
       <span className="bg-gradient-to-r dark:from-blue-400 dark:via-indigo-400 dark:to-blue-500 from-rose-500 via-red-500 to-rose-600 bg-clip-text text-transparent">
         Обмен валют
@@ -198,31 +155,7 @@ export default function DaboutPage() {
       >
       {/* Заголовок блока */}
       <motion.div 
-        className="p-6"
-        initial={{
-          background: 'linear-gradient(90deg, #f43f5e, #ef4444)'
-        }}
-        animate={{
-          background: [
-            'linear-gradient(90deg, #f43f5e, #ef4444)',
-            'linear-gradient(90deg, #ef4444, #f97316)',
-            'linear-gradient(90deg, #f97316, #f59e0b)',
-            'linear-gradient(90deg, #f59e0b, #84cc16)',
-            'linear-gradient(90deg, #84cc16, #10b981)',
-            'linear-gradient(90deg, #10b981, #0ea5e9)',
-            'linear-gradient(90deg, #0ea5e9, #3b82f6)',
-            'linear-gradient(90deg, #3b82f6, #6366f1)',
-            'linear-gradient(90deg, #6366f1, #8b5cf6)',
-            'linear-gradient(90deg, #8b5cf6, #ec4899)',
-            'linear-gradient(90deg, #ec4899, #f43f5e)',
-            'linear-gradient(90deg, #f43f5e, #ef4444)'
-          ]
-        }}
-        transition={{
-          duration: 16,
-          repeat: Infinity,
-          ease: "linear"
-        }}
+        className="p-6 bg-gradient-to-r from-[#f6183d] via-[#f43f5e] to-[#fa2727] dark:from-[#3b82f6] dark:via-[#6366f1] dark:to-[#8b5cf6]"
       >
         <motion.h2
           whileHover={{ x: 15, scale: 1.01 }}
@@ -237,19 +170,8 @@ export default function DaboutPage() {
           {/* Карта с анимированной границей */}
           <div className="w-full lg:w-2/3 p-4">
             <motion.div
-              className="p-[3px] rounded-2xl overflow-hidden"
-              style={{
-                background: `linear-gradient(90deg, ${colors.join(', ')})`,
-                backgroundSize: `${colors.length * 100}% 100%`,
-              }}
-              animate={{
-                backgroundPosition: ['0% 0%', `${colors.length * 100}% 0%`]
-              }}
-              transition={{
-                duration: 120,
-                repeat: Infinity,
-                ease: 'linear'
-              }}
+            className={`p-[3px] rounded-2xl overflow-hidden bg-gradient-to-r dark:from-${colors[0]} dark:via-${colors[1]} dark:to-${colors[2]}
+            from-${colors[3]} via-${colors[4]} to-${colors[5]}`}
             >
               <div className="relative bg-white dark:bg-gray-800 rounded-xl overflow-hidden h-full shadow-lg">
                 <div className="h-[500px] w-full">
@@ -257,7 +179,7 @@ export default function DaboutPage() {
                 </div>
               </div>
             </motion.div>
-            <div className="px-4 py-3 text-[12px] sm:text-sm text-white dark:text-gray-300 flex justify-between items-center bg-gradient-to-r from-[rgba(220,38,38,0.3)] to-[rgba(255,38,38,0.8)] dark:bg-gradient-to-l dark:from-[rgba(29,78,216,0.5)] dark:to-[rgba(109,78,255,0.8)] rounded-lg mt-2">
+            <div className="px-4 py-3 text-[12px] sm:text-sm text-white dark:text-gray-300 flex justify-between items-center bg-gradient-to-r from-[rgba(220,38,38,0.9)] to-[rgba(255,38,38,0.8)] dark:bg-gradient-to-l dark:from-[rgba(29,78,216,0.7)] dark:to-[rgba(150,78,255,0.9)] rounded-lg mt-2">
               <span className='sm:hover:text-[14.5px] text-[11px] sm:text-sm transition-all duration-400'>Центр карты: {defaultCenter.lat.toFixed(4)}, {defaultCenter.lng.toFixed(4)}</span>
               <span className="flex items-center sm:hover:text-[14.5px] transition-all duration-400">
                 <span className="mr-1">🗺️</span> OpenStreetMap
@@ -345,7 +267,7 @@ export default function DaboutPage() {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700"
           whileHover={{ y: -5 }}
         >
-          <div className="p-6 bg-gradient-to-r from-cyan-500 via-blue-600 to-indigo-600">
+          <div className="p-6 bg-gradient-to-r from-red-500 via-[#fa3939] to-[#f45648] dark:from-blue-500 dark:via-blue-600 dark:to-indigo-600">
             <div className="flex items-center">
               <span className="text-2xl sm:text-3xl mr-4 text-white">⏰</span>
               <h3 className="text-xl sm:text-2xl font-bold text-white">График работы</h3>
@@ -377,7 +299,7 @@ export default function DaboutPage() {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden border border-gray-200 dark:border-gray-700"
           whileHover={{ y: -5 }}
         >
-          <div className="p-6 bg-gradient-to-r from-emerald-400 via-emerald-500 to-green-600">
+          <div className="p-6 bg-gradient-to-r from-red-500 via-[#fa3939] to-[#f45648] dark:from-indigo-600 dark:via-blue-600 dark:to-blue-500">
             <div className="flex items-center">
               <span className="text-2xl sm:text-3xl mr-4 text-white">📅</span>
               <h3 className="text-xl sm:text-2xl font-bold text-white">Рабочий календарь</h3>
