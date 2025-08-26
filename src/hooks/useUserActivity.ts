@@ -5,6 +5,9 @@ export type UserStatus = 'online' | 'idle' | 'offline'
 export const useUserActivity = () => {
   const [userStatus, setUserStatus] = useState<UserStatus>('online')
   const [lastActivity, setLastActivity] = useState<number>(Date.now())
+  const IDLE_TIMEOUT = 60000
+  const OFFLINE_TIMEOUT = 300000
+  const STATUS_CHECK_INTERVAL_MS = 10000
 
   // Функция для обновления времени последней активности
   const updateActivity = useCallback(() => {
@@ -29,14 +32,14 @@ export const useUserActivity = () => {
       const currentTime = Date.now()
       const inactiveTime = currentTime - lastActivity
       
-      if (inactiveTime > 300000) { // 5 минут - offline
+      if (inactiveTime > OFFLINE_TIMEOUT) { // 5 минут - offline
         setUserStatus('offline')
-      } else if (inactiveTime > 60000) { // 1 минута - idle
+      } else if (inactiveTime > IDLE_TIMEOUT) { // 1 минута - idle
         setUserStatus('idle')
       } else {
         setUserStatus('online')
       }
-    }, 10000)
+    }, STATUS_CHECK_INTERVAL_MS)
 
     return () => {
       events.forEach(event => {

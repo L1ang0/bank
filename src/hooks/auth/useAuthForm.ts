@@ -82,6 +82,7 @@ export const useAuthForm = () => {
   const [isResetLoading, setIsResetLoading] = useState(false)
   const [resetSuccess, setResetSuccess] = useState(false)
   const router = useRouter()
+  const DEFAULT_AVATAR_URL = 'https://vrmuwzkelrwnmsoteluq.supabase.co/storage/v1/object/public/avatars/default.png'
 
   const {
     register,
@@ -183,7 +184,7 @@ export const useAuthForm = () => {
           email: data.email,
           password: data.password,
           options: {
-            data: { name: data.name, phone: data.phone, avatar_url: 'https://vrmuwzkelrwnmsoteluq.supabase.co/storage/v1/object/public/avatars/default.png' },
+            data: { name: data.name, phone: data.phone, avatar_url: DEFAULT_AVATAR_URL },
             emailRedirectTo: `${window.location.origin}/auth/confirm?next=/`
           }
         })

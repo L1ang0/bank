@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify';
 
 export interface UserProfile {
   created_at: string
@@ -54,7 +55,7 @@ export const useProfilePage = () => {
     try {
       setUploading(true)
       if (!event.target.files || event.target.files.length === 0) {
-        alert('Выберите файл!')
+        toast.error('Выберите файл!');
         return
       }
 
@@ -82,7 +83,7 @@ export const useProfilePage = () => {
 
     } catch (error) {
       console.error('Ошибка загрузки аватарки:', error)
-      alert('Ошибка при загрузке аватарки')
+      toast.error('Ошибка при загрузке файла');
     } finally {
       setUploading(false)
     }
@@ -110,7 +111,7 @@ export const useProfilePage = () => {
       setEditing(false)
     } catch (error) {
       console.error('Ошибка обновления профиля:', error)
-      alert('Ошибка при обновлении профиля')
+      toast.error('Ошибка при обновлении профиля')
     }
   }, [formData, supabase])
 
@@ -126,8 +127,8 @@ export const useProfilePage = () => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }, [])
 
-  const avatarUrl = user?.user_metadata?.avatar_url || 
-    'https://vrmuwzkelrwnmsoteluq.supabase.co/storage/v1/object/public/avatars/default.png'
+  const DEFAULT_AVATAR_URL = 'https://vrmuwzkelrwnmsoteluq.supabase.co/storage/v1/object/public/avatars/default.png'
+  const avatarUrl = user?.user_metadata?.avatar_url || DEFAULT_AVATAR_URL
 
   return {
     user,
