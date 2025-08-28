@@ -168,7 +168,6 @@ export const useAuthForm = () => {
       const supabase = createSupabaseBrowserClient(Boolean(data.rememberMe))
   
       if (isLogin) {
-        // Логика входа остается прежней
         const { error } = await supabase.auth.signInWithPassword({
           email: data.email,
           password: data.password
@@ -180,7 +179,7 @@ export const useAuthForm = () => {
         router.push('/')
       } else {
         // При регистрации теперь передаем только email и password
-        const { data: authData, error } = await supabase.auth.signUp({
+        const { data: error } = await supabase.auth.signUp({
           email: data.email,
           password: data.password,
           options: {
