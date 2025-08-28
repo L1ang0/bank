@@ -1,18 +1,21 @@
 import { useState, useEffect, useCallback } from 'react'
 import { createSupabaseBrowserClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { toast } from 'react-toastify';
+import { toast } from 'react-toastify'
 
 export interface UserProfile {
+  id: string
+  email: string
   created_at: string
   updated_at: string
   email_confirmed_at: string | null
-  id: string
-  email: string
-  user_metadata: {
-    name?: string
-    phone?: string
-    avatar_url?: string
+  profile: {
+    name: string
+    phone: string
+    avatar_url: string
+    role: 'user' | 'admin'
+    created_at: string
+    updated_at: string
   }
 }
 
@@ -34,16 +37,31 @@ export const useProfilePage = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (user) {
-          setUser(user as UserProfile)
+        const { data: { user: authUser } } = await supabase.auth.getUser()
+        
+        if (authUser) {
+          // Получаем данные из таблицы profiles
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', authUser.id)
+            .single()
+
+          if (profileError) throw profileError
+
+          setUser({
+            ...authUser,
+            profile: profileData
+          } as UserProfile)
+          
           setFormData({
-            name: user.user_metadata?.name || '',
-            phone: user.user_metadata?.phone || '',
+            name: profileData.name || '',
+            phone: profileData.phone || '',
           })
         }
       } catch (error) {
         console.error('Ошибка получения пользователя:', error)
+        toast.error('Ошибка загрузки профиля')
       } finally {
         setLoading(false)
       }
@@ -55,7 +73,7 @@ export const useProfilePage = () => {
     try {
       setUploading(true)
       if (!event.target.files || event.target.files.length === 0) {
-        toast.error('Выберите файл!');
+        toast.error('Выберите файл!')
         return
       }
 
@@ -71,19 +89,25 @@ export const useProfilePage = () => {
 
       const { data } = supabase.storage.from('avatars').getPublicUrl(filePath)
       const newUrl = `${data.publicUrl}?t=${Date.now()}`
-      const { error: updateError } = await supabase.auth.updateUser({
-        data: { avatar_url: newUrl }
-      })
+
+      // Обновляем avatar_url в таблице profiles
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: newUrl })
+        .eq('id', user?.id)
+
       if (updateError) throw updateError
 
       setUser(prev => prev ? {
         ...prev,
-        user_metadata: { ...prev.user_metadata, avatar_url: newUrl }
+        profile: { ...prev.profile, avatar_url: newUrl }
       } : null)
+
+      toast.success('Аватар успешно обновлен!')
 
     } catch (error) {
       console.error('Ошибка загрузки аватарки:', error)
-      toast.error('Ошибка при загрузке файла');
+      toast.error('Ошибка при загрузке файла')
     } finally {
       setUploading(false)
     }
@@ -91,29 +115,33 @@ export const useProfilePage = () => {
 
   const saveProfile = useCallback(async () => {
     try {
-      const { error } = await supabase.auth.updateUser({
-        data: {
+      // Обновляем данные в таблице profiles
+      const { error } = await supabase
+        .from('profiles')
+        .update({
           name: formData.name,
           phone: formData.phone,
-        },
-      })
+        })
+        .eq('id', user?.id)
+
       if (error) throw error
 
       setUser(prev => prev ? {
         ...prev,
-        user_metadata: { 
-          ...prev.user_metadata,
+        profile: { 
+          ...prev.profile,
           name: formData.name,
           phone: formData.phone
         },
       } : null)
       
       setEditing(false)
+      toast.success('Профиль успешно обновлен!')
     } catch (error) {
       console.error('Ошибка обновления профиля:', error)
       toast.error('Ошибка при обновлении профиля')
     }
-  }, [formData, supabase])
+  }, [formData, supabase, user?.id])
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut()
@@ -128,7 +156,7 @@ export const useProfilePage = () => {
   }, [])
 
   const DEFAULT_AVATAR_URL = 'https://vrmuwzkelrwnmsoteluq.supabase.co/storage/v1/object/public/avatars/default.png'
-  const avatarUrl = user?.user_metadata?.avatar_url || DEFAULT_AVATAR_URL
+  const avatarUrl = user?.profile?.avatar_url || DEFAULT_AVATAR_URL
 
   return {
     user,

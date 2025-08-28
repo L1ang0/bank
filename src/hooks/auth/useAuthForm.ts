@@ -157,39 +157,44 @@ export const useAuthForm = () => {
     setIsLoading(true)
     setServerError(null)
     setShowSuccess(false)
-
+  
     try {
-      // Сохранение данных если выбрано "Запомнить меня"
       if (data.rememberMe) {
         setStoredCredentials(data.email, data.password)
       } else {
         clearStoredCredentials()
       }
-
-      // persistSession: true — «запомнить меня», false — сессия не хранится в storage
+  
       const supabase = createSupabaseBrowserClient(Boolean(data.rememberMe))
-
+  
       if (isLogin) {
+        // Логика входа остается прежней
         const { error } = await supabase.auth.signInWithPassword({
           email: data.email,
           password: data.password
         })
         if (error) throw error
-
+  
         setShowSuccess(true)
         setTimeout(() => setShowSuccess(false), 5000)
         router.push('/')
       } else {
-        const { error } = await supabase.auth.signUp({
+        // При регистрации теперь передаем только email и password
+        const { data: authData, error } = await supabase.auth.signUp({
           email: data.email,
           password: data.password,
           options: {
-            data: { name: data.name, phone: data.phone, avatar_url: DEFAULT_AVATAR_URL },
+            // Данные для профиля теперь будут обрабатываться триггером
+            data: {
+              name: data.name,
+              phone: data.phone,
+              avatar_url: DEFAULT_AVATAR_URL
+            },
             emailRedirectTo: `${window.location.origin}/auth/confirm?next=/`
           }
         })
         if (error) throw error
-
+  
         setShowSuccess(true)
       }
     } catch (e) {

@@ -37,10 +37,36 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
 
   // Получение пользователя и его аватара
   useEffect(() => {
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, session) => {
+    const getUserProfile = async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser()
+      if (authUser) {
+        setUser(authUser)
+        
+        // Получаем аватар из таблицы profiles
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', authUser.id)
+          .single()
+        
+        setAvatarUrl(profile?.avatar_url || null)
+      }
+    }
+  
+    getUserProfile()
+  
+    const { data: subscription } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session?.user) {
         setUser(session.user)
-        setAvatarUrl(session.user.user_metadata?.avatar_url || null)
+        
+        // Получаем аватар из таблицы profiles при изменении состояния аутентификации
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', session.user.id)
+          .single()
+        
+        setAvatarUrl(profile?.avatar_url || null)
       } else {
         setUser(null)
         setAvatarUrl(null)
@@ -66,7 +92,7 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
       <div className="flex items-center">
         <button
           onClick={onMenuClick}
-          className="text-white dark:text-blue-100 md:text-2xl sm:text-[24px] text-[22px] md:w-10 sm:w-9 w-8 md:h-10 sm:h-9 h-8 rounded-full bg-[#ff5555]/80 dark:bg-[#4444ff]/80 hover:scale-105 shadow-[6px_4px_8px_rgba(0,0,0,0.2)] hover:shadow-[7px_8px_12px_rgba(0,0,0,0.2)] transition-all duration-300 cursor-pointer"
+          className="text-white dark:text-blue-100 md:text-3xl sm:text-[26px] text-[24px] md:w-10 sm:w-9 w-8 md:h-10 sm:h-9 h-8 rounded-full  bg-transparent hover:bg-red-500 dark:hover:bg-blue-500 hover:scale-105  hover:shadow-[7px_8px_12px_rgba(0,0,0,0.2)] transition-all duration-300 cursor-pointer"
         >
           <span className="inline-block text-center hover:rotate-180 transition-transform duration-500">
             &#9776;
@@ -94,16 +120,19 @@ export default function Header({ onMenuClick }: { onMenuClick: () => void }) {
       <div className="flex items-center gap-12">
         
         {/* Часы */}
-        <div className="hidden sm:flex items-center rounded-lg px-3 py-1 bg-gradient-to-br from-[#ffffffaf]/20 via-[#da0000af]/60 to-[#da0000af]/30 dark:from-[#ffffffaf]/20 dark:via-[#0000daaf]/60 dark:to-[#0000daaf]/30 border border-[#ffffff]/30 border-b-[#ff0f0f]/50 border-r-[#ff0f0f]/50 dark:border-[#ffffff]/30 dark:border-b-[#0f0fff]/50 dark:border-r-[#0f0fff]/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),12px_6px_12px_rgba(255,50,50,0.7)] dark:shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),12px_6px_12px_rgba(50,50,255,0.7)] hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_0_16px_rgba(255,80,80,0.7)] dark:hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_0_16px_rgba(80,80,255,0.7)] backdrop-blur-sm transition-all duration-300">
-          <span className="font-mono text-white text-lg sm:text-[16px] md:text-xl font-medium tracking-tighter">
-            <span className="text-red-200">{currentTime.hours}</span>
+        <motion.div 
+          className="hidden md:flex items-center bg-gradient-to-br from-[#ffffffaf]/20 via-[#da0000af]/60 to-[#da0000af]/30 dark:from-[#ffffffaf]/20 dark:via-[#0000daaf]/60 dark:to-[#0000daaf]/30 border border-[#ffffff]/30 border-b-[#ff0f0f]/50 border-r-[#ff0f0f]/50 dark:border-[#ffffff]/30 dark:border-b-[#0f0fff]/50 dark:border-r-[#0f0fff]/50 shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),12px_6px_12px_rgba(255,50,50,0.7)] dark:shadow-[inset_0_1px_2px_rgba(255,255,255,0.8),12px_6px_12px_rgba(50,50,255,0.7)] hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_0_16px_rgba(255,80,80,0.7)] dark:hover:shadow-[inset_0_1px_2px_rgba(255,255,255,0.4),0_0_16px_rgba(80,80,255,0.7)] backdrop-blur-sm transition-all duration-300 bg-opacity-50 px-4 py-2 rounded-xl"
+          whileHover={{ scale: 1.02 }}
+          transition={{ type: "spring", stiffness: 400, damping: 10 }}
+        >
+          <div className="font-mono text-white text-sm flex space-x-1">
+            <span className="bg-rose-600 dark:bg-blue-700 px-2 py-1 rounded text-red-200 hover:scale-115 hover:shadow-2xl hover:rounded-lg transition-all duration-500">{currentTime.hours}</span>
             <span className="text-white/80 mx-0.5 animate-pulse">:</span>
-            <span className="text-green-200">{currentTime.minutes}</span>
+            <span className="bg-rose-600 dark:bg-blue-700 px-2 py-1 rounded text-green-200 hover:scale-115 hover:shadow-2xl hover:rounded-lg transition-all duration-500">{currentTime.minutes}</span>
             <span className="text-white/80 mx-0.5 animate-pulse">:</span>
-            <span className="text-blue-200">{currentTime.seconds}</span>
-          </span>
-        </div>
-
+            <span className="bg-rose-600 dark:bg-blue-700 px-2 py-1 rounded text-blue-200 hover:scale-115 hover:shadow-2xl hover:rounded-lg transition-all duration-500">{currentTime.seconds}</span>
+          </div>
+        </motion.div>
         {/* Аватар или кнопка входа */}
         {user ? (
           <Link href="/profile">
