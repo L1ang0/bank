@@ -1,165 +1,39 @@
 'use client'
-import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { useRouter } from 'next/navigation'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { z } from 'zod'
 import ThemeToggle from '../ThemeToggle'
-
-// базовые схемы
-const emailSchema = z.string()
-  .min(1, { message: 'Email обязателен' })
-  .email({ message: 'Некорректный email' })
-  .max(100, { message: 'Email слишком длинный' })
-
-const passwordSchema = z.string()
-  .min(8, { message: 'Пароль должен быть не менее 8 символов' })
-
-const baseSchema = z.object({
-  email: emailSchema,
-  password: passwordSchema,
-  honeypot: z.string().max(0, { message: 'Это поле должно быть пустым' }).optional()
-})
-
-// схемы для разных режимов формы
-const loginSchema = baseSchema.extend({
-  rememberMe: z.boolean().optional()
-})
-
-const registerSchema = baseSchema.extend({
-  name: z.string()
-    .min(2, { message: 'Имя должно быть не менее 2 символов' })
-    .max(50, { message: 'Имя слишком длинное' }),
-  phone: z.string()
-    .min(10, { message: 'Телефон должен быть в формате +375 (__) ___-__-__' })
-    .max(19, { message: 'Телефон слишком длинный' }),
-  password: passwordSchema
-    .max(50, { message: 'Пароль слишком длинный' })
-    .regex(/[A-Z]/, { message: 'Должна быть хотя бы одна заглавная буква' })
-    .regex(/[a-z]/, { message: 'Должна быть хотя бы одна строчная буква' })
-    .regex(/[0-9]/, { message: 'Должна быть хотя бы одна цифра' })
-    .regex(/[^A-Za-z0-9]/, { message: 'Должен быть хотя бы один спецсимвол' })
-})
-
-//объединенный тип для формы
-type AuthFormValues = z.infer<typeof baseSchema> & {
-  rememberMe?: boolean
-  name?: string
-  phone?: string
-}
-
-const defaultValues: AuthFormValues = {
-  email: '',
-  password: '',
-  rememberMe: false,
-  name: '',
-  phone: '',
-  honeypot: ''
-}
+import { useAuthForm } from '@/hooks/auth/useAuthForm'
+import { useRouter } from 'next/navigation'
 
 export default function AuthForm() {
-  const router = useRouter()
-  const [isLogin, setIsLogin] = useState(true)
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [serverError, setServerError] = useState<string | null>(null)
-  const [showSuccess, setShowSuccess] = useState(false)
-  const [passwordStrength, setPasswordStrength] = useState(0)
-
   const {
+    isLogin,
+    showPassword,
+    isLoading,
+    serverError,
+    showSuccess,
+    passwordStrength,
     register,
     handleSubmit,
-    reset,
     watch,
     setValue,
     trigger,
-    formState: { errors, isValid }
-  } = useForm<AuthFormValues>({
-    resolver: zodResolver(isLogin ? loginSchema : registerSchema),
-    defaultValues,
-    mode: 'onChange'
-  })
+    errors,
+    isValid,
+    password,
+    calculatePasswordStrength,
+    setShowPassword,
+    setPasswordStrength,
+    toggleAuthMode,
+    handlePhoneChange,
+    getError,
+    handlePasswordReset,
+    isResetLoading,
+    resetSuccess,
+    setServerError
+  } = useAuthForm()
 
-  const password = watch('password')
-
-  const calculatePasswordStrength = (pass: string) => {
-    let strength = 0
-    if (pass.length >= 8) strength += 1
-    if (/[A-Z]/.test(pass)) strength += 1
-    if (/[a-z]/.test(pass)) strength += 1
-    if (/[0-9]/.test(pass)) strength += 1
-    if (/[^A-Za-z0-9]/.test(pass)) strength += 1
-    return strength
-  }
-
-  const onSubmit: SubmitHandler<AuthFormValues> = async (data) => {
-    if (data.honeypot) return
-    
-    setIsLoading(true)
-    setServerError(null)
-    
-    //test
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      if (isLogin) {
-        router.push('/dashboard')
-      } else {
-        setShowSuccess(true)
-        setTimeout(() => {
-          setIsLogin(true)
-          reset(defaultValues)
-          setShowSuccess(false)
-        }, 2000)
-      }
-    } catch (error) {
-      setServerError(error instanceof Error ? error.message : 'Произошла неизвестная ошибка')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const toggleAuthMode = () => {
-    setIsLogin(!isLogin)
-    reset(defaultValues)
-  }
-
-  const formatPhoneNumber = (value: string) => {
-    if (!value) return value;
-    
-    // Удаляем все нецифровые символы, кроме плюса
-    let phoneNumber = value.replace(/[^\d+]/g, '');
-    
-    if (phoneNumber.length > 13) {
-      phoneNumber = phoneNumber.substring(0, 13);
-    }
-    
-    if (phoneNumber.startsWith('+375')) {
-      const parts = phoneNumber.match(/^(\+375)(\d{0,2})(\d{0,3})(\d{0,2})(\d{0,2})$/);
-      if (parts) {
-        return `${parts[1]}${parts[2] ? ` (${parts[2]}` : ''}${parts[3] ? `) ${parts[3]}` : ''}${parts[4] ? `-${parts[4]}` : ''}${parts[5] ? `-${parts[5]}` : ''}`;
-      }
-    }
-    
-    // Для других международных кодов просто добавляем +
-    if (!phoneNumber.startsWith('+')) {
-      phoneNumber = '+' + phoneNumber;
-    }
-    
-    return phoneNumber;
-  };
+  const router = useRouter()
   
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const formatted = formatPhoneNumber(value);
-    setValue('phone', formatted, { shouldValidate: true });
-  };
-
-  const getError = (field: keyof AuthFormValues): string | undefined => {
-    return errors[field]?.message as string | undefined
-  }
-
-
   return (
     <div className="min-h-screen w-full relative overflow-hidden flex items-center justify-center">
       {/* Многоуровневый градиентный фон */}
@@ -172,7 +46,7 @@ export default function AuthForm() {
       
       {/* Контейнер для кнопок вверху */}
       <div className={`absolute top-2 max-[600px]:top-7.5 left-0 right-0 px-6 z-20
-       ${isLogin ? '' : 'max-sm:hidden'} flex justify-between items-center`}>
+       flex justify-between items-center`}>
         <motion.button
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -196,7 +70,7 @@ export default function AuthForm() {
           </span>
         </motion.button>
   
-        {/* Стилизованный ThemeToggle */}
+        {/* ThemeToggle */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -254,7 +128,7 @@ export default function AuthForm() {
             </div>
 
             {/* Тело формы */}
-            <form onSubmit={handleSubmit(onSubmit)} className="sm:pt-3 pt-5 p-6 space-y-2">
+            <form onSubmit={handleSubmit} className="sm:pt-3 pt-5 p-6 space-y-2">
               {/* Honeypot поле для защиты от ботов */}
               <input type="text" {...register('honeypot')} className="hidden" tabIndex={-1} autoComplete="off" />
               
@@ -484,15 +358,16 @@ export default function AuthForm() {
                 </motion.button>
               </motion.div>
 
-              {/* Дополнительные опции */}
+            {/* Дополнительные опции */}
               {isLogin && (
                 <motion.div
                   initial={{ opacity: 0, y: 0 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.3 }}
-                  className="flex justify-between items-center pt-2"
+                  className="flex justify-between items-center pt-2" 
                 >
-                  <div className="flex items-center">
+                  {/* Запомнить меня */}
+                  <div className="flex items-center pl-2">
                     <input 
                       id="remember-me" 
                       type="checkbox" 
@@ -503,16 +378,76 @@ export default function AuthForm() {
                       Запомнить меня
                     </label>
                   </div>
-                  <a 
-                    href="#" 
-                    className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition-colors"
-                  >
-                    Забыли пароль?
-                  </a>
+
+                  {/* Забыли пароль */}
+                  <div className="flex items-center pr-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const email = watch('email');
+                        if (email && !errors.email) {
+                          handlePasswordReset(email);
+                        } else {
+                          setServerError('Введите email для восстановления пароля');
+                        }
+                      }}
+                      disabled={isResetLoading}
+                      className="text-sm font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline transition-colors disabled:opacity-50"
+                    >
+                      {isResetLoading ? 'Отправка...' : 'Забыли пароль?'}
+                    </button>
+                  </div>
                 </motion.div>
               )}
-            </form>
 
+            {resetSuccess && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 mt-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg text-sm"
+              >
+                Ссылка для восстановления пароля отправлена на вашу почту
+              </motion.div>
+            )}
+            </form>
+            {/* Pop-up при успешной регистрации */}
+            {showSuccess && !isLogin && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+              >
+                <motion.div 
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-2xl max-w-md w-full text-center"
+                >
+                  <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                    Подтвердите Email
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    Мы отправили письмо на <b>{watch("email")}</b>.  
+                    Перейдите по ссылке в письме, чтобы активировать аккаунт.
+                  </p>
+                  <div className="mt-4 flex justify-center gap-3">
+                    <a
+                      href={`https://${watch("email")?.split("@")[1]}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-lg bg-gradient-to-r from-orange-400 to-rose-500 text-white font-medium hover:opacity-90 transition"
+                    >
+                      Открыть почту
+                    </a>
+                    <button
+                      onClick={() => router.push("/")}
+                      className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+                    >
+                      Позже
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
             {/* Переключатель между входом и регистрацией */}
             <div className="-mb-2 relative flex">
               <button
@@ -626,8 +561,6 @@ export default function AuthForm() {
     </div>
   )
 }
-
-// Иконки (остаются без изменений)
 const UserIcon = () => (
   <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
